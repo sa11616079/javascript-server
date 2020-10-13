@@ -27,7 +27,7 @@ Last but not least, Visual Studio Code also has a built-in Task Runner, which pr
 
 To use this feature, we can either set a tasks.json file or through some popular Task configuration like Grunt, Gulp, or MSBuild if provided. Once the configuration is set, we can run the Task Runner through the Command Palette by typing Run Task. Typing Tasks will list all related commands.
 
-5 useful plugins vscode
+8 useful plugins vscode
 
 1.Auto Rename Tag
 Auto Rename Tag automatically renames paired HTML/XML tags. It can either change the opening tag or closing tag, after which the corresponding tag is changed to match.
