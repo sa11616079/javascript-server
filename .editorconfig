@@ -1,0 +1,14 @@
+root == true
+
+[*]
+indent_style = tab
+
+trim_trailing_whitespace = true
+
+indent_space = 2
+
+max_line_length = off
+
+charset = utf-8
+
+end_of_line = lf
