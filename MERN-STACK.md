@@ -4,7 +4,7 @@ _MERN stands for MongoDB, Express, React, Node, after the four key technologies 
 
 **1. MongoDB :** 
 
-_If your application stores any data (user profiles, content, comments, uploads, events, etc.), then you’re going to want a database that’s just as easy to work with as Angular, Express, and Node.It is a document-oriented and No-SQL database used to store the application data_.
+_If your application stores any data (user profiles, comments, uploads, events, etc.), then you’re going to want a database that’s just as easy to work with as Angular, Express, and Node.It is a document-oriented and No-SQL database used to store the application data_.
 
 **2. NodeJS:**
 

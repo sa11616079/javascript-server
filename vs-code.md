@@ -52,5 +52,5 @@ _GitLens supports the additional Git capabilities, beyond the VS Code built-in o
 
 **8. github extension**
 
-_The GitHub Extension for Visual Studio makes it easy to connect to and work with your repositories on GitHub and GitHub Enterprise from directly within Visual Studio 2015 or newer. Clone existing repositories or create new ones and start collaborating_.
+_The GitHub Extension for Visual Studio makes its easy to connect to and work with your repositories on GitHub and GitHub Enterprise from directly within Visual Studio 2015 or newer. Clone existing repositories or create new ones and start collaborating_.
 
