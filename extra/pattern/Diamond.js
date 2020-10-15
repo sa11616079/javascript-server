@@ -15,7 +15,7 @@ function diamond(noOfRows)
         s1="";
         s2="";
     }  
-    for(let i=noOfRows;i>=0;i--)
+    for(let i=noOfRows;i>=1;i--)
     {
         for(let j=1;j<=noOfRows-i;j++)
         {
