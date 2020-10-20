@@ -7,7 +7,7 @@ function triangle(noOfRows)
         {
             s1+="* ";
         }
-        console.log(s1);
+        console.log(`${s1}`);
         s1="";
     }   
 }

@@ -5,7 +5,7 @@ function factorial(n)
     {
         fact=fact*i;
     }
-    console.log("factorial of ",n+" is ",fact);
+    console.log(`factorial of ${n} is ${fact}`);
 }
 factorial(5);
 factorial(10);

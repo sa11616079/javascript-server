@@ -19,7 +19,7 @@ function fibonacci(n)
         s3+=nextTerm+" ";
         
     }
-    console.log(s1,s2,s3);
+    console.log(`${s1} ${s2} ${s3}`);
 }
 fibonacci(10);
 fibonacci(15);

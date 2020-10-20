@@ -18,7 +18,7 @@ function displayprimeBTWToIntervals(n1,n2)
         }
         n1++;
     }
-    console.log(s1);
+    console.log(`prime number is ${s1}`);
 }
 displayprimeBTWToIntervals(1,20);
 displayprimeBTWToIntervals(45,200);

@@ -5,7 +5,7 @@ function reverseString(str)
     {
         s1+=str[i];
     }
-    console.log(s1);
+    console.log(`after reverse string is ${s1}`);
 }
 reverseString("satish");
 reverseString("sadsrfdg");
