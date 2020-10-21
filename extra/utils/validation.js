@@ -18,7 +18,7 @@ let users =
     }
   ];
 let checkemail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-let vldUser = "", inVldUser = "", count1 = 0, count2 = 0;
+let vldUser = [], inVldUser = [];
 function validateEmail(email) 
 {
   return checkemail.test(String(email).toLowerCase());
@@ -26,22 +26,21 @@ function validateEmail(email)
 
 function validateUsers(user) 
 {
-  user.forEach(({ traineeEmail, reviewerEmail }) => 
+  user.forEach((element) =>
   {
+    let { traineeEmail, reviewerEmail }=element;
     if (validateEmail(traineeEmail) && validateEmail(reviewerEmail)) 
     {
-      vldUser += "(" + traineeEmail + " , " + reviewerEmail + ") ";
-      count1++;
+      vldUser.push(element);
     }
     else
     {
-      inVldUser += "(" + traineeEmail + " , " + reviewerEmail + ") ";
-      count2++;
+      inVldUser.push(element);
     }
 });
-console.log("Total valid users : ", count1);
+console.log("Total valid users : ", vldUser.length);
 console.log("valid users are : ", vldUser);
-console.log("Total Invalid users : ", count2);
+console.log("Total Invalid users : ", inVldUser.length);
 console.log("Invalid users are : ", inVldUser);
 }
 validateUsers(users);
