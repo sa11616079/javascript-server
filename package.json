@@ -1,0 +1,26 @@
+{
+  "name": "javascript-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/node": "^7.12.1",
+    "@babel/preset-env": "^7.12.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "babel-node extra"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sa11616079/javascript-server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sa11616079/javascript-server/issues"
+  },
+  "homepage": "https://github.com/sa11616079/javascript-server#readme"
+}
