@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "babel-node extra"
+    "test": "babel-node extra",
+    "start:extra": "babel-node extra",
+    "start:extraTs": "tsc-watch --project . --onSuccess \"npm run nodemon\"",
+    "nodemon": "nodemon ./dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +23,11 @@
   "dependencies": {
     "@babel/core": "^7.12.3",
     "@babel/node": "^7.12.1",
-    "@babel/preset-env": "^7.12.1"
+    "@babel/preset-env": "^7.12.1",
+    "nodemon": "^2.0.6",
+    "tsc-watch": "^4.2.9"
+  },
+  "devDependencies": {
+    "typescript": "^4.0.3"
   }
 }
