@@ -15,7 +15,7 @@ const permissions =
         delete: []
     }
 };
-
+let {getUser1,getUsers2}=permissions;
 function hasPermission(moduleName, role, permissionType) {
     if (!moduleName.hasOwnProperty(permissionType)) {
         console.log(`Object not having any ${permissionType} property`);
@@ -27,5 +27,5 @@ function hasPermission(moduleName, role, permissionType) {
         console.log(`${role} can perform ${permissionType} action : false`);
     }
 }
-hasPermission(permissions.getUser1, "head-trainer", "delete");
+hasPermission(getUser1,"head-trainer", "delete");
 
