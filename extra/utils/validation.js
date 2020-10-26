@@ -1,28 +1,5 @@
-// const users =
-//   [
-//     {
-//       traineeEmail: "satish1.patel@successive.tech",
-//       reviewerEmail: "shubham1.jain@successive.tech"
-//     },
-//     {
-//       traineeEmail: "satish2.patel@successive.tech",
-//       reviewerEmail: "shubham2.jain@successive.tech"
-//     },
-//     {
-//       traineeEmail: "satish13.patel@successive.tech",
-//       reviewerEmail: "shubham13.jain@successive.tech"
-//     },
-//     {
-//       traineeEmail: "satish14.patel@successive.tech",
-//       reviewerEmail: "shubham4@.jain@successive.tech"
-//     }
-//   ];
-let checkemail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 let vldUser = [], inVldUser = [];
-// function validateEmail(email) 
-// {
-//   return checkemail.test(String(email).toLowerCase());
-// }
+import {validateEmail} from './helpers.js';
 
 function validateUsers(user) 
 {
@@ -44,8 +21,4 @@ console.log("Total Invalid users : ", inVldUser.length);
 console.log("Invalid users are : ", inVldUser);
 }
 // validateUsers(users);
-
-export {validateUsers};
-
-import {validateEmail} from './helpers.js';
-export {validateEmail};
+export default validateUsers;

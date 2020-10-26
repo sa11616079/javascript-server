@@ -37,4 +37,4 @@ const users =
   ];
 
 export {permissions};
-export{users};
+export {users};

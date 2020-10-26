@@ -3,11 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {
-    "@babel/core": "^7.12.3",
-    "@babel/node": "^7.12.1",
-    "@babel/preset-env": "^7.12.1"
-  },
   "devDependencies": {},
   "scripts": {
     "test": "babel-node extra"
@@ -22,5 +17,10 @@
   "bugs": {
     "url": "https://github.com/sa11616079/javascript-server/issues"
   },
-  "homepage": "https://github.com/sa11616079/javascript-server#readme"
+  "homepage": "https://github.com/sa11616079/javascript-server#readme",
+  "dependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/node": "^7.12.1",
+    "@babel/preset-env": "^7.12.1"
+  }
 }
