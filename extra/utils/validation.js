@@ -1,19 +1,11 @@
 let vldUser = [], inVldUser = [];
 import {validateEmail} from './helpers.js';
-
-function validateUsers(user) 
+function validateUsers(user)  
 {
   user.forEach((element) =>
   {
     let { traineeEmail, reviewerEmail }=element;
-    if (validateEmail(traineeEmail) && validateEmail(reviewerEmail)) 
-    {
-      vldUser.push(element);
-    }
-    else
-    {
-      inVldUser.push(element);
-    }
+    (validateEmail(traineeEmail) && validateEmail(reviewerEmail)) ? vldUser.push(element) : inVldUser.push(element);
 });
 console.log("Total valid users : ", vldUser.length);
 console.log("valid users are : ", vldUser);

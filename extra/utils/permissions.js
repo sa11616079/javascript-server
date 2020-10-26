@@ -12,4 +12,3 @@ function hasPermission(moduleName, role, permissionType) {
 // hasPermission(permissions.getUser1, "head-trainer", "delete");
 
 export default hasPermission;
-
