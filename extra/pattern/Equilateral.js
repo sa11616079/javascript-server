@@ -16,4 +16,5 @@ function equilateral(noOfRows)
         s2="";
     }   
 }
-equilateral(10);
+// equilateral(10);
+export default equilateral;

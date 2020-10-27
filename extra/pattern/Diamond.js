@@ -31,4 +31,5 @@ function diamond(noOfRows)
     } 
     
 }
-diamond(5);
+// diamond(5);
+export default diamond;
