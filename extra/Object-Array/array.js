@@ -8,12 +8,6 @@ for(let x in frt)
 
 //Add an item to the end of an Array
 
-let frt1=["apple","banna","mango"];
-frt1.push("papaya");
-for(let x in frt1)
-{
-    console.log(frt1[x]);
-}
 frt.push("papaya");
 for(let x in frt)
 {
@@ -22,12 +16,6 @@ for(let x in frt)
 
 //Add an item to the beginning of an Array
 
-let frt2=["apple","banna","mango"];
-frt2.unshift("mgg");
-for(let x in frt2)
-{
-    console.log(frt2[x]);
-}
 frt.unshift("mgg");
 for(let x in frt)
 {
@@ -36,15 +24,6 @@ for(let x in frt)
 
 //Find the index of an item in the Array
 
-let frt3=["apple","banna","mango"];
-console.log(frt3.indexOf("banna"));
-
-//Remove an item by index position
-
-let frt4=["apple","banna","mango"];
-let pos=frt4.indexOf("banna");
-frt4.splice(pos, 1);
-console.log(frt4[1]);
 console.log(frt.indexOf("banna"));
 
 //Remove an item by index position
@@ -108,3 +87,4 @@ months.splice(1, 0, 'Feb');
 console.log(months);
 months.splice(4, 1, 'May');
 console.log(months);
+

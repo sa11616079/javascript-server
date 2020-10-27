@@ -9,4 +9,6 @@ function hasPermission(moduleName, role, permissionType) {
         console.log(`${role} can perform ${permissionType} action : false`);
     }
 }
+// hasPermission(permissions.getUser1, "head-trainer", "delete");
+
 export default hasPermission;
