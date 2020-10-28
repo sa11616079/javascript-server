@@ -1,7 +1,7 @@
 import * as express from "express";
 class Server {
     app
-    constructor( private config ) {
+    constructor( private config:any ) {
         this.app=express()
     }
     bootstrap() {
