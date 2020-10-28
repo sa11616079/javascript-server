@@ -3,6 +3,7 @@ import {IConfig} from "./config/IConfig";
 class Server {
     app
     constructor( private config:IConfig ) {
+        this.config=config;
         this.app=express()
     }
     bootstrap() {
