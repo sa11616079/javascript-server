@@ -1,7 +1,8 @@
 import * as express from "express";
+import {IConfig} from "./config/IConfig";
 class Server {
     app
-    constructor( private config:any ) {
+    constructor( private config:IConfig ) {
         this.app=express()
     }
     bootstrap() {
