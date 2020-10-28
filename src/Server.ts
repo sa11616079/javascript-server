@@ -1,5 +1,5 @@
 import * as express from "express";
-import {IConfig} from "./config/IConfig";
+import { IConfig } from "./config/IConfig";
 class Server {
     app
     constructor( private config:IConfig ) {
