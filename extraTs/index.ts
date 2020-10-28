@@ -1,6 +1,6 @@
-//helper.js
-
-const users =
+import { validateUsers } from "./utils/index";
+import { diamond, equilateral } from "./pattern/index";
+const users: IUsers[] =
   [
     {
       traineeEmail: "satish1.patel@successive.tech",
@@ -16,8 +16,12 @@ const users =
     },
     {
       traineeEmail: "satish14.patel@successive.tech",
-      reviewerEmail: "shubham4@.jain@successive.tech"
+      reviewerEmail: "shubham14@.jain@successive.tech"
     }
   ];
 
-  export{users};
+  validateUsers(users);
+  diamond(10);
+  equilateral(10);
+  import {IUsers} from "./interfaces";
+
