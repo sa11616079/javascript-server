@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {},
-  "devDependencies": {
-    "husky": "^4.3.0"
-  },
   "scripts": {
-    "test": "node-babel extra"
+    "test": "babel-node extra",
+    "start:extra": "babel-node extra",
+    "start:extraTs": "tsc-watch --project . --onSuccess \"npm run nodemon\"",
+    "nodemon": "nodemon ./dist/index.js",
+    "lint": "./node_modules/tslint/bin/tslint -c tslint.json -p tsconfig.json --exclude 'node_modules/**/*.{j,t}s'",
+    "lint:fix": "npm run lint --fix"
   },
   "repository": {
     "type": "git",
@@ -20,5 +21,18 @@
   "bugs": {
     "url": "https://github.com/sa11616079/javascript-server/issues"
   },
-  "homepage": "https://github.com/sa11616079/javascript-server#readme"
+  "homepage": "https://github.com/sa11616079/javascript-server#readme",
+  "dependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/node": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "husky": "^4.3.0",
+    "nodemon": "^2.0.6",
+    "tsc-watch": "^4.2.9",
+    "tslint": "^6.1.3"
+  },
+  "devDependencies": {
+    "pre-commit": "^1.2.2",
+    "typescript": "^4.0.3"
+  }
 }
