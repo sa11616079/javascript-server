@@ -1,12 +1,12 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import { notFoundHandler, errorHandler } from './libs/routes';
-import {IConfig} from "./config/IConfig";
+import { IConfig } from "./config/IConfig";
 class Server {
     app
-    constructor(private config:IConfig) {
+    constructor( private config:IConfig ) {
         this.config=config;
-        this.app = express();
+        this.app=express()
     }
     bootstrap() {
         this.setupRouts();

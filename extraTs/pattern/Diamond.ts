@@ -1,4 +1,4 @@
-function diamond(noOfRows)
+function diamond(noOfRows:number)
 {
     let s1="",s2="";
     for(let i=1;i<=noOfRows;i++)
