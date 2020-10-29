@@ -1,5 +1,4 @@
-import {hasPermission} from './permissions.js';
-import {validateUsers} from './validation.js';
+import {hasPermission} from './permissions';
+import {validateUsers} from './validation';
 export {hasPermission};
 export {validateUsers};
-//index.js
