@@ -25,7 +25,7 @@ class Server {
             next();
         });
 
-        app.use('/health-check', (req:Request,res:Response) => {
+        app.use('/health-check', (req:Request,res:Response,next:NextFunction) => {
             console.log('Inside Second MidleWare');
             res.send('I am OKK');
         });
