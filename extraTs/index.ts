@@ -1,5 +1,4 @@
 import { validateUsers } from "./utils/index";
-import { diamond, equilateral } from "./pattern/index";
 const users: IUsers[] =
   [
     {
@@ -21,7 +20,3 @@ const users: IUsers[] =
   ];
 
   validateUsers(users);
-  diamond(10);
-  equilateral(10);
-  import {IUsers} from "./interfaces";
-

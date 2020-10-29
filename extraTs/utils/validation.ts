@@ -7,6 +7,7 @@ function validateUsers(user: IUsers)
   user.forEach((element) =>
   {
     let { traineeEmail, reviewerEmail }=element;
+    if (validateEmail(traineeEmail) && validateEmail(reviewerEmail)) 
     if (validateEmail(traineeEmail):boolean && validateEmail(reviewerEmail):boolean) 
     {
       vldUser.push(element);

@@ -1,4 +1,3 @@
-import { Ipermissions , IUsers} from "./interfaces";
 const permissions : Ipermissions={
     'getUser1':
     {
@@ -15,7 +14,7 @@ const permissions : Ipermissions={
         delete: []
     }
 };
-
+export {Ipermissions};
 const users =
   [
     {
