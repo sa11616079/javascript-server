@@ -1,5 +1,4 @@
 import { validateUsers } from "./utils/index";
-
 const users: IUsers[] =
   [
     {
@@ -21,8 +20,3 @@ const users: IUsers[] =
   ];
 
   validateUsers(users);
-  import {IUsers} from "./interfaces";
-
-  
-
-

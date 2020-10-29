@@ -1,4 +1,4 @@
-function equilateral(noOfRows)
+function equilateral(noOfRows:number)
 {
     let s1="",s2="";
     for(let i=1;i<=noOfRows;i++)
