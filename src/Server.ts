@@ -12,14 +12,13 @@ class Server {
     }
 
     bootstrap() {
-        this.setupRouts();
         this.initBodyParser();
+        this.setupRouts();
         return this;
     }
 
     setupRouts() {
         const { app } = this;
-
         app.use((req:Request,res:Response,next:NextFunction) => {
             console.log('Inside First MidleWare');
             next();
@@ -31,6 +30,11 @@ class Server {
         });
 
         this.app.use('/api',mainRouter);
+        app.use('/health-check', (req:Request, res:Response) => {
+            console.log('Inside Second MidleWare');
+            res.send('I am fine');
+        });
+
         app.use(notFoundHandler);
         app.use(errorHandler);
 
