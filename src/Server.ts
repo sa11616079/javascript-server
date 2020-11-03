@@ -4,6 +4,7 @@ import * as bodyParser from "body-parser";
 import { notFoundHandler, errorHandler } from './libs/routes';
 import {IConfig} from "./config/IConfig";
 import mainRouter from "./router";
+
 class Server {
     app
     constructor(private config:IConfig) {
@@ -28,6 +29,7 @@ class Server {
         app.use('/health-check', (req:Request,res:Response,next:NextFunction) => {
             console.log('Inside Second MidleWare');
             res.send('I am OKK');
+
         });
 
         this.app.use('/api',mainRouter);
