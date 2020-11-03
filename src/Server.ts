@@ -12,8 +12,8 @@ class Server {
     }
 
     bootstrap() {
-        this.setupRouts();
         this.initBodyParser();
+        this.setupRouts();
         return this;
     }
 
