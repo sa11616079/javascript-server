@@ -1,4 +1,4 @@
-function hasPermission(moduleName, role, permissionType) {
+function hasPermission(moduleName:object, role:string, permissionType:string) {
     if (!moduleName.hasOwnProperty(permissionType)) {
         console.log(`Object not having any ${permissionType} property`);
     }
