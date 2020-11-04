@@ -15,7 +15,7 @@ export default (moduleName:string, permissionType:string) => (req:Request, res:R
         console.log('User',decodeUser);
         if(hasPermission(permissions.getUser,role,permissionType))
         {
-            console.log(`${role} has permission ${permissionType} : true`);
+            console.log(`${role} has permission ${permissionType} :true`);
             next();
         }
         else
