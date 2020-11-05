@@ -1,14 +1,14 @@
 import { validateEmail } from './helpers';
-import { IUsers } from './extraTs/interface';
+import { IUsers } from '../../extraTs/interfaces';
 let vldUser : String[]=[];
 let inVldUser : String[]=[];
-function validateUsers(user: IUsers)
+function validateUsers(user)
 {
   user.forEach((element) =>
   {
     let { traineeEmail, reviewerEmail }=element;
     if (validateEmail(traineeEmail) && validateEmail(reviewerEmail)) 
-    if (validateEmail(traineeEmail):boolean && validateEmail(reviewerEmail):boolean) 
+    if (validateEmail(traineeEmail) && validateEmail(reviewerEmail)) 
     {
       vldUser.push(element);
     }

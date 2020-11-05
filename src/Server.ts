@@ -63,8 +63,7 @@ class Server {
                     console.log(`App is running on port ${PORT}`);         
                 });
             })
-            .catch(err=>Database.disconnect());
-            // Database.disconnect(MONGO_URL);
+            .catch(err=>console.log(err));
     }
 }
 

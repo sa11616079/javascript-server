@@ -1,3 +1,4 @@
+import {Ipermissions} from './interfaces'
 const permissions : Ipermissions={
     'getUser1':
     {
