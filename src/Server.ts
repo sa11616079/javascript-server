@@ -7,7 +7,7 @@ import mainRouter from "./router";
 import Database from "./libs/Database";
 
 class Server {
-    private app:express.Express
+    app:express.Express
     constructor(private config:IConfig) {
         this.config=config;
         this.app = express();
@@ -50,21 +50,16 @@ class Server {
     
     public run() {
 
-        const { PORT ,NODE_ENV,MONGO_URL} = this.config;
+        const { PORT, MONGO_URL} = this.config;
         Database.open(MONGO_URL)
             .then((res)=>{
                 console.log("Successfully connected to Mongo");
-                this.app.listen(PORT, (err) => 
+                this.app.listen(()=>
                 {
-                    if (err) 
-                    {
-                        console.log(err);
-                    }
                     console.log(`App is running on port ${PORT}`);         
                 });
             })
-            .catch(err=>Database.disconnect());
-            // Database.disconnect(MONGO_URL);
+            .catch(err=>{console.log(err)});
     }
 }
 

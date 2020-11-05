@@ -4,7 +4,7 @@ import validationHandler from "../../libs/validationHandler";
 import Validation from "./Validation";
 import authMoiddleWare from "../../libs/routes/authMoiddleWare";
 
-const traineeRouter=new Router();
+const traineeRouter=Router();
 
 traineeRouter.route('/')
     .get(authMoiddleWare('getUser','read'),validationHandler(Validation.get), TraineeController.get)
