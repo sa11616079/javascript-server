@@ -7,7 +7,7 @@ import authMoiddleWare from "../../libs/routes/authMoiddleWare";
 const traineeRouter=Router();
 
 traineeRouter.route('/')
-    .get(authMoiddleWare('getUser','read'),validationHandler(Validation.get), TraineeController.get)
+    // .get(authMoiddleWare('getUser','read'),validationHandler(Validation.get), TraineeController.get)
     .post(validationHandler(Validation.create),TraineeController.create)
     .put(validationHandler(Validation.update),TraineeController.update)
     .delete(validationHandler(Validation.delete),TraineeController.delete);

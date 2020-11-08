@@ -1,34 +1,43 @@
 import * as jwt from "jsonwebtoken";
-import {hasPermission} from "../../libs/permissions";
-import {permissions} from "../../libs/constants";
 import { Request, Response, NextFunction } from "express";
-import { error } from "console";
+import { userModel } from "../../repositories/user/UserModel";
+import * as bcrypt from "bcrypt";
 
-export default (moduleName:string, permissionType:string) => (req:Request, res:Response, next:NextFunction) => {
-    try 
-    {
-        console.log("The config is : ", moduleName, permissionType);
-        console.log("Header is ", req.headers['authorization']);
-        const token = req.headers['authorization'];
-        const decodeUser = jwt.verify(token, 'fQ5JGYpHyISVsBr2OFHHuV1z4cO0nFmL');  
-        const role=decodeUser.role;
-        console.log('User',decodeUser);
-        if(hasPermission(permissions.getUser,role,permissionType))
-        {
-            console.log(`${role} has permission ${permissionType} :true`);
-            next();
-        }
-        else
-        {
-            throw error;
-        }
-        
-    }
+export default () => (req: Request, res: Response, next: NextFunction) => {
 
-    catch (err) {
-        next({
-            error: "Unauthorized",
-            code: 403
-        })
-    }
+  try {
+
+    const { email, password } = req.body;
+    userModel.findOne({ email: email }, (err, result) => {
+      if (result) {
+        if (password === result.password) {
+          
+          const token = jwt.sign({result}, 'ZIdstYzmRSRzDscHmvbumwGyFfqhPSBI');
+          result.password= bcrypt.hashSync(result.password,10);
+          console.log(result);
+          // console.log(token);
+          res.send({
+            data: token,
+            message: 'Login successfully',
+            status: 200
+          });
+        }
+        else {
+          res.send({
+            message: 'Password Doesnt Match',
+            status: 400
+          });
+        }
+      }
+      else {
+        res.send({
+          message: 'Email is not Registered',
+          status: 404
+        });
+      }
+    });
+  }
+  catch (err) {
+    res.send(err);
+  }
 }

@@ -45,16 +45,16 @@ class Server {
     }
 
     initBodyParser() {
-        this.app.use(bodyParser.json({ type: 'application/*+json' }));
+        this.app.use(bodyParser.json());
     }
     
     public run() {
 
-        const { PORT, MONGO_URL} = this.config;
+        const {app,config:{ PORT, MONGO_URL}} = this;
         Database.open(MONGO_URL)
             .then((res)=>{
                 console.log("Successfully connected to Mongo");
-                this.app.listen(()=>
+                this.app.listen(PORT,() =>
                 {
                     console.log(`App is running on port ${PORT}`);         
                 });
