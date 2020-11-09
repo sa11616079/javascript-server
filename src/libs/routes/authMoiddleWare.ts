@@ -11,7 +11,6 @@ export default () => (req: Request, res: Response, next: NextFunction) => {
     userModel.findOne({ email: email }, (err, result) => {
       if (result) {
         if (password === result.password) {
-
           result.password= bcrypt.hashSync(result.password,10);
           const token = jwt.sign({result}, 'ZIdstYzmRSRzDscHmvbumwGyFfqhPSBI');
           console.log(result);

@@ -5,10 +5,7 @@ import Validation from "./Validation";
 import authMoiddleWare from "../../libs/routes/authMoiddleWare";
 
 const userRouter=Router();
-userRouter.route('/')
-    .get(authMoiddleWare(), validationHandler(Validation.get),UserController.get)
-    .post(validationHandler(Validation.create),UserController.create)
-    .put(validationHandler(Validation.update),UserController.update)
-    .delete(validationHandler(Validation.delete),UserController.delete);
+userRouter.route('/login')
+    .post(authMoiddleWare(),validationHandler(Validation.create),UserController.create)
 
 export default userRouter;
