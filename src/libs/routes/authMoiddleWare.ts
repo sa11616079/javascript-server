@@ -1,42 +1,37 @@
 import * as jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-import { userModel } from "../../repositories/user/UserModel";
-import * as bcrypt from "bcrypt";
+import {hasPermission} from "../../libs/permissions";
+import {permissions} from "../../libs/constants";
+import IRequest from "./IRequest";
 
-export default () => (req: Request, res: Response, next: NextFunction) => {
+export default (moduleName:string, permissionType:string) => (req:IRequest, res:Response, next:NextFunction) => {
+  try 
+  {
+      console.log("The config is : ", moduleName, permissionType);
+      console.log("Header is ", req.headers['authorization']);
+      const token = req.headers['authorization'];
+      const secret="fQ5JGYpHyISVsBr2OFHHuV1z4cO0nFmL";
+      const decodeUser = jwt.verify(token, secret);
+      const role=decodeUser.role;
+      // console.log('User',decodeUser);
 
-  try {
-
-    const { email, password } = req.body;
-    userModel.findOne({ email: email }, (err, result) => {
-      if (result) {
-        if (password === result.password) {
-          result.password= bcrypt.hashSync(result.password,10);
-          const token = jwt.sign({result}, 'ZIdstYzmRSRzDscHmvbumwGyFfqhPSBI');
-          console.log(result);
-          // console.log(token);
-          res.send({
-            data: token,
-            message: 'Login successfully',
-            status: 200
-          });
-        }
-        else {
-          res.send({
-            message: 'Password Doesnt Match',
-            status: 400
-          });
-        }
+      if(hasPermission(permissions.getUser,role,permissionType))
+      {
+          console.log(`${role} has permission ${permissionType} :true`);
       }
-      else {
-        res.send({
-          message: 'Email is not Registered',
-          status: 404
-        });
+      else
+      {
+          next({error:"unauthorized",message:"Permission denied",status:403});
       }
-    });
+      req.user=decodeUser;
+      next();
+      
   }
+
   catch (err) {
-    res.send(err);
+      next({
+          error: "Unauthorized",
+          code: 403
+      })
   }
 }
