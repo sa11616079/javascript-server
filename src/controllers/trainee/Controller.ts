@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import UserRepository from "../../repositories/user/UserRepository";
 
 class TraineeController{
     static instance:TraineeController
@@ -10,17 +11,25 @@ class TraineeController{
         TraineeController.instance=new TraineeController();
         return TraineeController.instance;
     }
+    constructor(){
+        this.get=this.get.bind(this);
+    }
+    userRepository:UserRepository=new UserRepository();
 
-    get(req:Request,res:Response,next:NextFunction){
+    get=(req:Request,res:Response,next:NextFunction)=>{
         try{
-            res.send({
-                message:"Trainee fetched successfully",
-                data:
+            console.log("Inside get request for user");
+            this.userRepository.find({role:"trainee"},{},{})
+            .then((res)=>{
+                console.log("Response is : ",res);
+            })
+            const data=
+            [
                 {
-                    name:"Trainee1",
-                    address:"Noida"
+                    name:"trainee"
                 }
-            });
+            ]
+            res.status(200).send({message:"successfully fetched trainee",data:data});
         }
         catch(err)
         {
@@ -28,17 +37,20 @@ class TraineeController{
         }
     }
 
-    create(req:Request,res:Response,next:NextFunction){
+    create=(req:Request,res:Response,next:NextFunction)=>{
         try{
-            console.log("Inside post methode of Trainee Controller");
-            res.send({
-                message:"Trainee created successfully",
-                data:
+            console.log("Inside create request for user");
+            this.userRepository.find({role:"trainee"},{},{})
+            .then((res)=>{
+                console.log("Response is : ",res);
+            })
+            const data=
+            [
                 {
-                    name:"Trainee1",
-                    address:"Noida"
+                    name:"trainee",
                 }
-            });
+            ]
+            res.status(200).send({message:"successfully fetched trainee",data:data});
         }
         catch(err)
         {
@@ -46,17 +58,20 @@ class TraineeController{
         }
     }
 
-    update(req:Request,res:Response,next:NextFunction){
+    update=(req:Request,res:Response,next:NextFunction)=>{
         try{
-            console.log("Inside update methode of Trainee Controller");
-            res.send({
-                message:"Trainee updated successfully",
-                data:
+            console.log("Inside update request for user");
+            this.userRepository.find({role:"trainee"},{},{})
+            .then((res)=>{
+                console.log("Response is : ",res);
+            })
+            const data=
+            [
                 {
-                    name:"Trainee1",
-                    address:"Noida"
+                    name:"trainee",
                 }
-            });
+            ]
+            res.status(200).send({message:"successfully fetched trainee",data:data});
         }
         catch(err)
         {
@@ -64,17 +79,20 @@ class TraineeController{
         }
     }
 
-    delete(req:Request,res:Response,next:NextFunction){
+    delete=(req:Request,res:Response,next:NextFunction)=>{
         try{
-            console.log("Inside delete methode of Trainee Controller");
-            res.send({
-                message:"Trainee deleted successfully",
-                data:
+            console.log("Inside delete request for user");
+            this.userRepository.find({role:"trainee"},{},{})
+            .then((res)=>{
+                console.log("Response is : ",res);
+            })
+            const data=
+            [
                 {
-                    name:"Trainee1",
-                    address:"Noida"
+                    name:"trainee",
                 }
-            });
+            ]
+            res.status(200).send({message:"successfully fetched trainee",data:data});
         }
         catch(err)
         {
