@@ -1,3 +1,4 @@
+import { readSync } from "fs";
 import * as mongoose from "mongoose";
 import {DocumentQuery,Query} from "mongoose";
 
@@ -18,8 +19,7 @@ export default class VersioningRepository<D extends mongoose.Document,M extends 
         const model=new this.model({
             ...options,
             _id:id,
-            originalId:id,
-            deletedAt:Date.now,
+            originalId:id
         });
         return await model.save();
     }
@@ -43,29 +43,38 @@ export default class VersioningRepository<D extends mongoose.Document,M extends 
         const finalQuery={deleteAt:null,...query};
         return this.model.find(finalQuery,projection,options);
     }
-    public invalidate(id:any):DocumentQuery<D,D>{
-        return this.model.update({originalId: id,deletedAt:null},{});
-    }
 
-    public async update(data:any):Promise<D>{
-        console.log("Looking for privious valid document ");
-        const prev=await this.findOne({originalId:data.originalId,deletedAt:null});
-        console.log("Prev : ",prev);
-        if(prev)
-        {
-            await this.invalidate(data.originalId);
-        }
-        else
-        {
-            return null;
-        }
-        console.log("Data : ",data);
-        const newData=Object.assign(JSON.parse(JSON.stringify(prev)),data);
-        console.log("newData : ",newData);
+    public async update(data:any, id:string):Promise<D>{
+        // console.log("Looking for privious valid document ");
+        let originalData;
+        const prev=await this.findOne({originalId:id,deletedAt:null,deletedBy:null})
+        // console.log("Prev : ",prev);
+        // console.log("Data : ",data);  
+        originalData=prev;
+        this.updateOne(originalData);
+        const newData=Object.assign(JSON.parse(JSON.stringify(originalData)),data);
+        // console.log("newData : ",newData);
         newData._id=VersioningRepository.generateObjectId();
-        delete newData.deleteAt;
-
+        delete newData.deletedAt;
         const model=new this.model(newData);
         return model.save();
+    }
+
+    public async updateOne(originalData:any){
+
+        const oldId=originalData._id;
+        const oldModel={
+            ...originalData,
+            deletedBy:oldId,
+            deletedAt:Date.now(),
+        };
+        this.model.updateOne({originalId:oldId},oldModel)
+        .then((res)=>{
+            if(res===null)
+            {
+                throw 'Error';
+            }
+        })
+        .catch((err)=>{console.log("errror is :  ",err)});
     }
 }

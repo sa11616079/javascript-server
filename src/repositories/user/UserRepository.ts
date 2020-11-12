@@ -24,19 +24,20 @@ export default class UserRepository extends VersionableRepository<IUserModel,mon
     }
 
     public create(data:any):Promise<IUserModel>{
-        console.log("UserRepository :: create ",data);
+        // console.log("UserRepository :: create ",data);
         const id=UserRepository.generateObjectId();
         const model=new userModel({
             _id:id,
+            createdAt:Date.now(),
             originalId: id,
             ...data,
         });
         return model.save();
     }
 
-    public update(data:any):Promise<IUserModel>{
+    public update(data:any, id:any):Promise<IUserModel>{
         console.log("UserRepository :: update ",data);
-        return super.update(data);
+        return super.update(data,id);
     }
 
     public count(query:any={}):any{
