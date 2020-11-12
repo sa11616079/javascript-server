@@ -4,7 +4,7 @@ import {permissions} from "../../libs/constants";
 import { Request, Response, NextFunction } from "express";
 import { error } from "console";
 
-export default (moduleName:string, permissionType:string) => (req:Request, res:Response, next:NextFunction) => {
+export default (moduleName:Object, permissionType:string) => (req:Request, res:Response, next:NextFunction) => {
     try 
     {
         console.log("The config is : ", moduleName, permissionType);
