@@ -14,7 +14,7 @@ export default ( config ) => ( req:Request, res:Response, next:NextFunction  ) =
         });
 
         if (obj.required) {
-            if (isNull(values)) {
+            if (val1===null) {
                 errors.push({
                     key: {key},
                     location: {val1},
@@ -44,7 +44,7 @@ export default ( config ) => ( req:Request, res:Response, next:NextFunction  ) =
         }
         // Checking for regex
         if (obj.regex) {
-            const regex = /^[a-zA-Z ]{2,30}$/;
+            const regex = obj.regex;
             if (!regex.test(values)) {
                 errors.push({
                     key: {key},
@@ -55,13 +55,13 @@ export default ( config ) => ( req:Request, res:Response, next:NextFunction  ) =
         }
         // Checking for default
         if (obj.default) {
-            if (isNull(values)) {
+            if (val1===null) {
                 values[0] === obj.default;
             }
         }
         // Checking for number
         if (obj.number) {
-            if (isNaN(values) || values === undefined) {
+            if (val1===null || values === undefined) {
                 errors.push({
                     key: {key},
                     location: {val1},
@@ -77,8 +77,3 @@ export default ( config ) => ( req:Request, res:Response, next:NextFunction  ) =
         next();
     }
 };
-
-function isNull( obj ) {
-    const a = ( obj === undefined || obj === null );
-    return a;
-}
