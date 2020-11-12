@@ -16,7 +16,7 @@ let config=
         name: 
         { 
             required: true, 
-            regex: true, 
+            regex: /^[a-zA-Z ]{2,30}$/, 
             in: ['body'], 
             errorMessage: 'Name is required', 
         } 
