@@ -13,7 +13,7 @@ export default (moduleName:string, permissionType:string) => (req:Request, res:R
         const decodeUser = jwt.verify(token, 'fQ5JGYpHyISVsBr2OFHHuV1z4cO0nFmL');  
         const role=decodeUser.role;
         console.log('User',decodeUser);
-        if(hasPermission(permissions.getUser,role,permissionType))
+        if(hasPermission(moduleName,role,permissionType))
         {
             console.log(`${role} has permission ${permissionType} : true`);
             next();
