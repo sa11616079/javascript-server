@@ -15,7 +15,7 @@ export default class UserRepository extends VersionableRepository<IUserModel,mon
     }
 
     public findOne(query):mongoose.DocumentQuery<IUserModel,IUserModel,{}>{
-        console.log("UserRepository :: findOne ",query);
+        // console.log("UserRepository :: findOne ",query);
         return super.findOne(query).lean();
     }
 
@@ -39,6 +39,11 @@ export default class UserRepository extends VersionableRepository<IUserModel,mon
         console.log("UserRepository :: update ",data);
         return super.update(data,id);
     }
+
+
+    public deleteData(id:any, remover:any) {
+        return super.delete(id, remover);
+        }
 
     public count(query:any={}):any{
         return super.count(query);

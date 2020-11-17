@@ -3,12 +3,13 @@ import UserController from "./Controller";
 import validationHandler from "../../libs/validationHandler";
 import Validation from "./Validation";
 import authMoiddleWare from "../../libs/routes/authMoiddleWare";
+import {permissions} from "../../libs/constants";
 
 const userRouter=Router();
 userRouter.route('/me')
-    .get(authMoiddleWare("getUser","read"),UserController.me);
+    .get(authMoiddleWare(permissions.getUser,"read"),UserController.me);
 
 userRouter.route('/login')
-    .post(UserController.login,validationHandler(Validation.create),UserController.create);
+    .post(authMoiddleWare(permissions.getUser,"read"),UserController.login,validationHandler(Validation.login));
 
 export default userRouter;

@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { userModel } from "../../repositories/user/UserModel";
+import config from "../../config/configuration";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 
@@ -94,14 +95,17 @@ class UserController {
         try {
             const { email, password } = req.body;
             userModel.findOne({ email: email }, (err, result) => {
-                if (result) {
-                    if (password === result.password) {
-                        result.password = bcrypt.hashSync(result.password, 10);
-                        const token = jwt.sign({ result }, 'ZIdstYzmRSRzDscHmvbumwGyFfqhPSBI');
+                if (result!=null) {
+
+                    if (bcrypt.compareSync(password, result.password)) {
+
+                        const payload={email:result.email,id:result.id};
+                        const token = jwt.sign(payload ,config.secretKey, { expiresIn: '15m' });
+                        console.log("You have Logged in successfully...");
                         console.log(result);
                         // console.log(token);
                         res.send({
-                            data: token,
+                            token: token,
                             message: 'Login successfully',
                             status: 200
                         });

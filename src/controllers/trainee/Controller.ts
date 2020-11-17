@@ -3,6 +3,8 @@ import { Request, Response, NextFunction } from "express";
 import IUserModel from "../../repositories/user/IUserModel";
 import { userModel } from "../../repositories/user/UserModel";
 import UserRepository from "../../repositories/user/UserRepository";
+import IRequest from "../../libs/routes/IRequest";
+import * as bcrypt from "bcrypt";
 
 class TraineeController {
     static instance: TraineeController
@@ -14,26 +16,24 @@ class TraineeController {
         TraineeController.instance = new TraineeController();
         return TraineeController.instance;
     }
-    
+
     userRepository: UserRepository = new UserRepository();
 
     get = (req: Request, res: Response, next: NextFunction) => {
         try {
             console.log("Inside get request for user");
             this.userRepository.count()
-                .then((count)=>{
-                    if(count>0)
-                    {
+                .then((count) => {
+                    if (count > 0) {
                         this.userRepository.getAll()
-                            .then((result)=>{
-                                console.log("All data is : ",result);
+                            .then((result) => {
+                                console.log("All data is : ", result);
                                 res.status(200).send({ message: "successfully fetched user data", details: result });
-                            })        
+                            })
                     }
-                    else
-                    {
+                    else {
                         console.log("user does not exist");
-                        res.status(200).send({ message: "user does not exist", NoOfUser: count });
+                        res.status(404).send({ message: "user does not exist", NoOfUser: count });
                     }
                 })
         }
@@ -49,16 +49,16 @@ class TraineeController {
             // console.log(email)
             userModel.findOne({ email: email }, (err, result) => {
 
-                if (result===null) {
-                    this.userRepository.create({ name: name, role: role, email: email, password: password })
+                if (result === null) {
+                    this.userRepository.create({ name: name, role: role, email: email, password: bcrypt.hashSync(password, 10) })
                         .then((data) => {
                             console.log("Response is : ", data);
                             res.status(200).send({ message: "successfully created data", data: data });
                         })
                 }
 
-                else{
-                    res.status(400).send({ message: `${email} is already exist in database`, data: {email} });
+                else {
+                    res.status(404).send({ message: `${email} is already exist in database`, data: { email } });
                 }
             })
         }
@@ -71,24 +71,22 @@ class TraineeController {
         try {
 
             console.log("Inside update method");
-            const{id,name, role, email, password}=req.body;
-            userModel.findOne({ originalId:id },(err,result)=>{
+            const { id, name, role, email, password } = req.body;
+            userModel.findOne({ originalId: id }, (err, result) => {
 
-                if(result!=null)
-                {
+                if (result != null) {
                     // console.log(result);
-                    this.userRepository.update({updatedAt:Date.now(),updatedBy:id,createdBy:id, name: name || result.name, role: role || result.role, email: email || result.email, password: password || result.password }, result.id)
+                    this.userRepository.update({ updatedAt: Date.now(), updatedBy: id, createdBy: id, name: name || result.name, role: role || result.role, email: email || result.email, password: password || result.password }, result.id)
                         .then((data) => {
                             console.log("Response is : ", data);
                             res.status(200).send({ message: "successfully updated data", data: data });
                         })
                 }
-                else
-                {
+                else {
                     console.log("user does not exist ");
-                    res.status(400).send({ message: "user does not exist", data: result });
+                    res.status(404).send({ message: "user does not exist", data: result });
                 }
-                
+
             });
         }
         catch (err) {
@@ -97,27 +95,22 @@ class TraineeController {
     }
 
     delete = (req: Request, res: Response, next: NextFunction) => {
-        try {
-            console.log("Inside delete method for user");
-            const{id}=req.body;
-            userModel.findOne({ originalId:id },(err,result)=>{
+        const { id } = req.body;
+        userModel.findOne({ originalId: id }, (err, result1) => {
 
-                if(result!=null)
-                {
-                    this.userRepository.updateOne(result);
-                    console.log("deleted data : ",result);
-                    res.status(200).send({ message: "successfully deleted data", data: result });
-                }
-                else
-                {
-                    console.log("user does not exist ");
-                    res.status(400).send({ message: "user does not exist", data: result });
-                }
-            })
-        }
-        catch (err) {
-            console.log("Inside error", err);
-        }
+            this.userRepository.deleteData({ originalId: id }, result1.id)
+                .then((result) => {
+                    console.log(result)
+                    res.status(200).send({ message: "data Deleted successfully", data: result });
+                })
+                .catch((err) => {
+                    res.send({
+                        message: 'User not found to be deleted',
+                        code: 404
+                    });
+                });
+        })
+
     }
 }
 
