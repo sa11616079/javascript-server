@@ -7,10 +7,10 @@ import {permissions} from "../../libs/constants";
 
 const traineeRouter=Router();
 
-traineeRouter
-    .get('/getall',authMoiddleWare(permissions.getUser,"read"),TraineeController.get,validationHandler(Validation.get))
-    .post('/create',authMoiddleWare(permissions.getUser,"read"),TraineeController.create,validationHandler(Validation.create))
-    .put('/update',authMoiddleWare(permissions.getUser,"read"),TraineeController.update,validationHandler(Validation.update))
-    .delete('/delete',authMoiddleWare(permissions.getUser,"read"),TraineeController.delete,validationHandler(Validation.delete));
+traineeRouter.route('/')
+    .get(authMoiddleWare(permissions.getUser,"read"),validationHandler(Validation.get),TraineeController.get)
+    .post(authMoiddleWare(permissions.getUser,"read"),validationHandler(Validation.create),TraineeController.create)
+    .put(authMoiddleWare(permissions.getUser,"read"),validationHandler(Validation.update),TraineeController.update)
+    .delete(authMoiddleWare(permissions.getUser,"read"),validationHandler(Validation.delete),TraineeController.delete);
 
 export default traineeRouter;

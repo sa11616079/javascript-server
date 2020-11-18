@@ -79,7 +79,6 @@ export default class VersioningRepository<D extends mongoose.Document, M extends
     public async delete(id: any, remover: any) {
 
         let originalData;
-
         await this.findOne({ originalId: id, deletedAt: null, deletedBy: null })
             .then((data) => {
                 if (data === null) {
@@ -94,7 +93,6 @@ export default class VersioningRepository<D extends mongoose.Document, M extends
                     deletedBy: oldId,
                     deletedAt: Date.now(),
                 };
-
                 this.model.updateOne({ originalId: oldId }, modelDelete)
                     .then((res) => {
                         if (res === null) {

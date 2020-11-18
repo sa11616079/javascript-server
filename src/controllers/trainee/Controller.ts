@@ -1,9 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-// import UserSchema from "src/repositories/user/UserSchema";
-import IUserModel from "../../repositories/user/IUserModel";
 import { userModel } from "../../repositories/user/UserModel";
 import UserRepository from "../../repositories/user/UserRepository";
-import IRequest from "../../libs/routes/IRequest";
 import * as bcrypt from "bcrypt";
 
 class TraineeController {
@@ -17,6 +14,12 @@ class TraineeController {
         return TraineeController.instance;
     }
 
+    constructor() {
+        this.get = this.get.bind(this);
+        this.create = this.create.bind(this);
+        this.update = this.update.bind(this);
+        this.delete = this.delete.bind(this);
+    }
     userRepository: UserRepository = new UserRepository();
 
     get = (req: Request, res: Response, next: NextFunction) => {
@@ -95,23 +98,32 @@ class TraineeController {
     }
 
     delete = (req: Request, res: Response, next: NextFunction) => {
-        const { id } = req.body;
-        userModel.findOne({ originalId: id }, (err, result1) => {
 
-            this.userRepository.deleteData({ originalId: id }, result1.id)
-                .then((result) => {
-                    console.log(result)
-                    res.status(200).send({ message: "data Deleted successfully", data: result });
-                })
-                .catch((err) => {
+        try {
+            const { id } = req.body;
+            console.log(id);
+            userModel.findOne({ originalId: id }, (err, result1) => {
+                if (result1 != null) {
+
+                    this.userRepository.deleteData(id, result1.id)
+                        .then((result) => {
+                            console.log("Data deleted successfully");
+                            res.status(200).send({ message: "Data Deleted successfully", data: result });
+                        })
+                }
+                else {
+                    console.log("User not found to be deleted");
                     res.send({
                         message: 'User not found to be deleted',
                         code: 404
                     });
-                });
-        })
-
+                }
+            })
+        }
+        catch (err) {
+            console.log("Inside error : ", err);
+            res.status(200).send({ message: "Inside error ", data: err });
+        }
     }
 }
-
 export default TraineeController.getInstance();
