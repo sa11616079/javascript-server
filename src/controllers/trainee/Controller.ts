@@ -35,8 +35,8 @@ class TraineeController {
                             })
                     }
                     else {
-                        console.log("user does not exist");
-                        res.status(404).send({ message: "user does not exist", NoOfUser: count });
+                        console.log("user does not exist1");
+                        res.status(404).send({ message: "user does not exist1", NoOfUser: count });
                     }
                 })
         }
@@ -86,8 +86,8 @@ class TraineeController {
                         })
                 }
                 else {
-                    console.log("user does not exist ");
-                    res.status(404).send({ message: "user does not exist", data: result });
+                    console.log("user does not exist2 ");
+                    res.status(404).send({ message: "user does not exist2", data: result });
                 }
 
             });

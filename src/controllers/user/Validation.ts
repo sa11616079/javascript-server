@@ -66,12 +66,14 @@ let config=
         email: {
             required: true,
             string: true,
-            in: ['body']
+            in: ['body'],
+            errorMessage: 'Email is required', 
         },
         password: {
             required: true,
             string: true,
-            in: ['body']
+            in: ['body'],
+            errorMessage: 'Password is required', 
         }
     }
 }

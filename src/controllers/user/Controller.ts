@@ -15,11 +15,11 @@ class UserController {
         return UserController.instance;
     }
 
-    me(req:any, res: Response, next: NextFunction){
-        const{user}=req;
+    me(req: any, res: Response, next: NextFunction) {
+        const { user } = req;
         delete user.password;
-        console.log("User is : ",user);
-        return res.status(200).send({message:"Me",status:"Ok",data:user});
+        console.log("User is : ", user);
+        return res.status(200).send({ message: "Me", status: "Ok", data: user });
     }
 
     get(req: Request, res: Response, next: NextFunction) {
@@ -95,27 +95,45 @@ class UserController {
         try {
             const { email, password } = req.body;
             userModel.findOne({ email: email }, (err, result) => {
-                if (result!=null) {
-
-                    if (bcrypt.compareSync(password, result.password)) {
-
-                        const payload={email:result.email,id:result.id};
-                        const token = jwt.sign(payload ,config.secretKey, { expiresIn: '15m' });
-                        console.log("You have Logged in successfully...");
-                        console.log(result);
-                        // console.log(token);
-                        res.send({
-                            token: token,
-                            message: 'Login successfully',
-                            status: 200
-                        });
+                if (result != null) {
+                    async function hashPassword() {
+                        const hashPwd = await bcrypt.compare(password, result.password);
+                        return hashPwd;
                     }
-                    else {
-                        res.send({
-                            message: 'Password Doesnt Match',
-                            status: 400
-                        });
-                    }
+                    hashPassword().then((result1) => {
+                        if (result1) {
+
+                            const payload = { email: result.email, id: result.id };
+                            async function signInUser() {
+                                const token = await jwt.sign(payload, config.secretKey, { expiresIn: '15m' });
+                                return token;
+                            }
+                            signInUser().then((genToken) => {
+                                // console.log("token : ", genToken)
+                                if (genToken) {
+                                    console.log("You have Logged in successfully...");
+                                    console.log(result);
+                                    res.send({
+                                        token: genToken,
+                                        message: 'Login successfully',
+                                        status: 200
+                                    });
+                                }
+                            })
+                            .catch((err)=>{
+                                console.log("Error : ",err);
+                            })
+                        }
+                        else {
+                            res.send({
+                                message: 'Password Doesnt Match',
+                                status: 400
+                            });
+                        }
+                    })
+                    .catch((err)=>{
+                        console.log("Error : ",err);
+                    })
                 }
                 else {
                     res.send({

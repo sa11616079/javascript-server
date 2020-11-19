@@ -10,6 +10,6 @@ userRouter.route('/me')
     .get(authMoiddleWare(permissions.getUser,"read"),UserController.me);
 
 userRouter.route('/login')
-    .post(authMoiddleWare(permissions.getUser,"read"),UserController.login,validationHandler(Validation.login));
+    .post(authMoiddleWare(permissions.getUser,"read"),validationHandler(Validation.login),UserController.login);
 
 export default userRouter;

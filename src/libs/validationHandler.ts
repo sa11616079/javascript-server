@@ -13,8 +13,6 @@ export default ( config ) => ( req:Request, res:Response, next:NextFunction  ) =
             return req[ val ][ key ];
         });
 
-        console.log("values : ",values,typeof(values[0]),isNull(values[0]));
-
         if(Object.keys(req[obj.in]).length===0){
             errors.push({
                 message:`Values should be passed through ${obj.in}`,
