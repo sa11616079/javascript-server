@@ -48,4 +48,9 @@ export default class UserRepository extends VersionableRepository<IUserModel,mon
     public count(query:any={}):any{
         return super.count(query);
     }
+
+    // public list(role,sort,skip,limit)
+    // {
+    //     return super.list(role,sort,skip,limit);
+    // }
 }

@@ -46,9 +46,7 @@ export default class VersioningRepository<D extends mongoose.Document, M extends
     public async update(data: any, id: string): Promise<D> {
         // console.log("Looking for privious valid document ");
         let originalData;
-        const prev = await this.findOne({ originalId: id, deletedAt: null, deletedBy: null })
-        // console.log("Prev : ",prev);
-        // console.log("Data : ",data);  
+        const prev = await this.findOne({ originalId: id, deletedAt: null, deletedBy: null }) 
         originalData = prev;
         this.updateOne(originalData);
         const newData = Object.assign(JSON.parse(JSON.stringify(originalData)), data);
@@ -102,4 +100,8 @@ export default class VersioningRepository<D extends mongoose.Document, M extends
             })
     }
 
+    public async list(role,sort ,skip,limit):Promise<D[]>
+    {
+        return this.getAll({role:role}).sort(sort).skip(Number(skip)).limit(Number(limit));
+    }
 }
