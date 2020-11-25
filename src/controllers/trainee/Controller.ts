@@ -25,11 +25,28 @@ class TraineeController {
     get = (req: Request, res: Response, next: NextFunction) => {
         try {
 
-            console.log("Inside get request for user");
+            console.log("::::::::::::INSIDE GETALL METHOD::::::::::::");
+
             this.userRepository.count()
                 .then((count) => {
                     if (count > 0) {
+
+                        const keys = Object.keys(req.query);
                         let sortBy: any;
+                        let searchBy: any;
+                        if (keys.includes("searchBy")) {
+
+                            const value = req.query.searchBy;
+                            if (!value.toString().includes("@")) {
+                                searchBy = { name: req.query.searchBy };
+                            }
+                            else if (value.toString().includes("@")) {
+                                searchBy = { email: req.query.searchBy };
+                            }
+                        }
+                        else {
+                            searchBy = { role: "trainee" };
+                        }
                         if (req.query.sortBy === "name") {
                             sortBy = { name: 1 };
                         }
@@ -39,85 +56,142 @@ class TraineeController {
                         else {
                             sortBy = { createdAt: -1 };
                         }
-                        this.userRepository.getAll()
+                        this.userRepository.getAll({ role: "trainee" })
                             .then((result) => {
 
-                                this.userRepository.list("trainee",sortBy,req.query.skip,req.query.limit)
+                                this.userRepository.list(searchBy, sortBy, req.query.skip, req.query.limit)
                                     .then((countTrainee) => {
 
                                         console.log("All data is : ", countTrainee);
                                         console.log("total trainees : ", countTrainee.length);
                                         console.log("NoOfUsers is : ", result.length);
-                                        res.status(200).send({ message: "successfully fetched user data", NoOfUser: result.length, NoOfTrainees: countTrainee.length, details: countTrainee });
+                                        res.send({
+                                            status: "ok",
+                                            message: "Successfully fetched Trainees",
+                                            data: ({
+                                                count: countTrainee.length,
+                                                records: countTrainee
+                                            })
+                                        });
                                     })
                             })
                     }
                     else {
-                        console.log("user does not exist1");
-                        res.status(404).send({ message: "user does not exist1", NoOfUser: count });
+                        console.log("there is no Trainee in your database");
+                        res.send({
+                            status: 404,
+                            message: "there is no Trainee in your database"
+                        });
                     }
                 })
         }
         catch (err) {
-            console.log("Inside error", err);
+            console.log("Inside error : ", err);
+            res.send({
+                status: "error",
+                message: "Inside error ",
+                error: err
+            });
         }
     }
 
     create = (req: Request, res: Response, next: NextFunction) => {
         try {
+
+            console.log("::::::::::::INSIDE CRAETE METHOD::::::::::::");
             console.log("Inside create method");
             const { name, role, email, password } = req.body;
-            // console.log(email)
             userModel.findOne({ email: email }, (err, result) => {
 
                 if (result === null) {
-                    this.userRepository.create({ name: name, role: role, email: email, password: bcrypt.hashSync(password, 10) })
-                        .then((data) => {
-                            console.log("Response is : ", data);
-                            res.status(200).send({ message: "successfully created data", data: data });
-                        })
+
+                    async function encodedPassword() {
+                        return await bcrypt.hash(password, 10)
+                    }
+                    encodedPassword().then((pass) => {
+                        this.userRepository.create({ name: name, role: role, email: email, password: pass })
+                            .then((data) => {
+                                console.log("Trainee Created : ", data);
+                                res.send({
+                                    status: "ok",
+                                    message: "Trainee Created Successfully",
+                                    data: ({ data })
+                                });
+                            })
+                    })
                 }
 
                 else {
-                    res.status(404).send({ message: `${email} is already exist in database`, data: { email } });
+                    res.send({
+                        status: 404,
+                        message: `${email} is already exist`,
+                        data: ({
+                            email: email
+                        })
+                    });
                 }
             })
         }
         catch (err) {
-            console.log("Inside error", err);
+            console.log("Inside error : ", err);
+            res.send({
+                status: "error",
+                message: "Inside error ",
+                error: err
+            });
         }
     }
 
     update = (req: Request, res: Response, next: NextFunction) => {
         try {
 
+            console.log("::::::::::::INSIDE UPDATE METHOD::::::::::::");
+
             console.log("Inside update method");
             const { id, name, role, email, password } = req.body;
             userModel.findOne({ originalId: id }, (err, result) => {
 
                 if (result != null) {
-                    // console.log(result);
                     this.userRepository.update({ updatedAt: Date.now(), updatedBy: id, createdBy: id, name: name || result.name, role: role || result.role, email: email || result.email, password: password || result.password }, result.id)
                         .then((data) => {
                             console.log("Response is : ", data);
-                            res.status(200).send({ message: "successfully updated data", data: data });
+                            res.send({
+                                "status": "ok",
+                                "message": "Trainee Updated Successfully",
+                                data: ({
+                                    id: result.id
+                                })
+                            });
                         })
                 }
                 else {
-                    console.log("user does not exist2 ");
-                    res.status(404).send({ message: "user does not exist2", data: result });
+                    console.log("Trainee does not exist");
+                    res.send({
+                        status: 404,
+                        message: "Trainee does not exist",
+                        data: ({
+                            id: id
+                        })
+                    });
                 }
 
             });
         }
         catch (err) {
-            console.log("Inside error", err);
+            console.log("Inside error : ", err);
+            res.send({
+                status: "error",
+                message: "Inside error ",
+                error: err
+            });
         }
     }
 
     delete = (req: Request, res: Response, next: NextFunction) => {
 
         try {
+
+            console.log("::::::::::::INSIDE DELETE METHOD::::::::::::");
             const { id } = req.body;
             console.log(id);
             userModel.findOne({ originalId: id }, (err, result1) => {
@@ -125,13 +199,20 @@ class TraineeController {
 
                     this.userRepository.deleteData(id, result1.id)
                         .then((result) => {
-                            console.log("Data deleted successfully");
-                            res.status(200).send({ message: "Data Deleted successfully", data: result });
+                            console.log("Trainee Deleted Successfully");
+                            res.send({
+                                status: "ok",
+                                message: "Trainee Deleted Successfully",
+                                data: ({
+                                    id: id
+                                })
+                            });
                         })
                 }
                 else {
                     console.log("User not found to be deleted");
                     res.send({
+                        status: "error",
                         message: 'User not found to be deleted',
                         code: 404
                     });
@@ -140,7 +221,11 @@ class TraineeController {
         }
         catch (err) {
             console.log("Inside error : ", err);
-            res.status(200).send({ message: "Inside error ", data: err });
+            res.send({
+                status: "error",
+                message: "Inside error ",
+                error: err
+            });
         }
     }
 }

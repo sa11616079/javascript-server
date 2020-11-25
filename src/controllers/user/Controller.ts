@@ -16,85 +16,29 @@ class UserController {
     }
 
     me(req: any, res: Response, next: NextFunction) {
-        const { user } = req;
-        delete user.password;
-        console.log("User is : ", user);
-        return res.status(200).send({ message: "Me", status: "Ok", data: user });
-    }
-
-    get(req: Request, res: Response, next: NextFunction) {
         try {
-            console.log("Inside get request for user");
-            const data =
-                [
-                    {
-                        name: "user1",
-                        address: "Noida"
-                    }
-                ]
-            res.status(200).send({ message: "successfully fetched users", Data: data });
+
+            console.log(":::::::::::::::INSIDE ME::::::::::::::");
+            const { user } = req;
+            delete user.password;
+            console.log("User is : ", user);
+            res.send({
+                status: "Ok",
+                message: "Me",
+                data: { user }
+            });
         }
         catch (err) {
-            console.log("Inside error", err);
-        }
-    }
-
-    create(req: Request, res: Response, next: NextFunction) {
-        try {
-            console.log("Inside post request for user");
-            const data =
-                [
-                    {
-                        name: "user1",
-                        address: "Noida"
-                    }
-                ]
-            res.status(200).send({ message: "successfully fetched users", Data: data });
-        }
-        catch (err) {
-            console.log("Inside error", err);
-        }
-    }
-
-    update(req: Request, res: Response, next: NextFunction) {
-        try {
-            console.log("Inside update request for user");
-            const data =
-                [
-                    {
-                        name: "user1",
-                        address: "Noida"
-                    }
-                ]
-            res.status(200).send({ message: "successfully fetched users", Data: data });
-        }
-        catch (err) {
-            console.log("Inside error", err);
-        }
-    }
-
-    delete(req: Request, res: Response, next: NextFunction) {
-        try {
-            console.log("Inside delete request for user");
-            const data =
-                [
-                    {
-                        name: "user1",
-                        address: "Noida"
-                    }
-                ]
-            res.status(200).send({ message: "successfully fetched users", Data: data });
-        }
-        catch (err) {
-            console.log("Inside error", err);
+            return next({ error: err, message: err });
         }
     }
 
     login(req: Request, res: Response, next: NextFunction) {
 
         try {
+            console.log("::::::::::::INSIDE LOG IN::::::::::::");
             const { email, password } = req.body;
-            userModel.findOne({ email: email }, (err, result) => {
+            userModel.findOne({ email: email, deletedAt: null }, (err, result) => {
                 if (result != null) {
                     async function hashPassword() {
                         const hashPwd = await bcrypt.compare(password, result.password);
@@ -103,7 +47,7 @@ class UserController {
                     hashPassword().then((result1) => {
                         if (result1) {
 
-                            const payload = { email: result.email, id: result.id };
+                            const payload = { email: result.email, id: result.id, role: result.role };
                             async function signInUser() {
                                 const token = await jwt.sign(payload, config.secretKey, { expiresIn: '15m' });
                                 return token;
@@ -114,15 +58,15 @@ class UserController {
                                     console.log("You have Logged in successfully...");
                                     console.log(result);
                                     res.send({
-                                        token: genToken,
-                                        message: 'Login successfully',
-                                        status: 200
+                                        status: "ok",
+                                        message: 'Authorization Token',
+                                        data: genToken,
                                     });
                                 }
                             })
-                            .catch((err)=>{
-                                console.log("Error : ",err);
-                            })
+                                .catch((err) => {
+                                    console.log("Error : ", err);
+                                })
                         }
                         else {
                             res.send({
@@ -131,9 +75,9 @@ class UserController {
                             });
                         }
                     })
-                    .catch((err)=>{
-                        console.log("Error : ",err);
-                    })
+                        .catch((err) => {
+                            console.log("Error : ", err);
+                        })
                 }
                 else {
                     res.send({
@@ -146,7 +90,6 @@ class UserController {
         catch (err) {
             res.send(err);
         }
-
     }
 }
 

@@ -50,16 +50,17 @@ export default ( config ) => ( req:Request, res:Response, next:NextFunction  ) =
             }
         }
         // Checking for regex
+
         if (obj.regex) {
-            const regex = /^[a-zA-Z ]{2,30}$/;
-            if (!regex.test(values)) {
-                errors.push({
-                    key: {key},
-                    location: {val1},
-                    message: obj.errorMessage || `${key} is not valid expression` ,
-                });
+            const reg = new RegExp(obj.regex);
+            if (!reg.test(values)) {
+              errors.push({
+                key: {key},
+                location: {val1},
+                message:obj.errorMessage || `${key} is invalid`});
             }
-        }
+          }
+
         // Checking for default
         if (obj.default) {
             if (isNull(values)) {

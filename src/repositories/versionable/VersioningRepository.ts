@@ -50,7 +50,6 @@ export default class VersioningRepository<D extends mongoose.Document, M extends
         originalData = prev;
         this.updateOne(originalData);
         const newData = Object.assign(JSON.parse(JSON.stringify(originalData)), data);
-        // console.log("newData : ",newData);
         newData._id = VersioningRepository.generateObjectId();
         delete newData.deletedAt;
         const model = new this.model(newData);
@@ -100,8 +99,8 @@ export default class VersioningRepository<D extends mongoose.Document, M extends
             })
     }
 
-    public async list(role,sort ,skip,limit):Promise<D[]>
+    public async list(searchBy,sort ,skip,limit):Promise<D[]>
     {
-        return this.getAll({role:role}).sort(sort).skip(Number(skip)).limit(Number(limit));
+        return this.getAll(searchBy).sort(sort).skip(Number(skip)).limit(Number(limit));
     }
 }
