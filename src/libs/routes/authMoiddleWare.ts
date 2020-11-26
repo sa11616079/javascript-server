@@ -27,6 +27,7 @@ export default (moduleName:string, permissionType:string) => (req:IRequest, res:
       next();
       
   }
+
   catch (err) {
       next({
           error: "Unauthorized",
