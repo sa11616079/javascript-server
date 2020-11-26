@@ -27,7 +27,7 @@ let config=
         { 
             required: true, 
             errorMessage: 'Id is required', 
-            in: ['params'] 
+            in: ['body'] 
         } 
     }, 
     get: 
@@ -59,7 +59,7 @@ let config=
             dataToUpdate: { in: ['body'], 
             required: true, isObject: true, 
             custom: function(dataToUpdate) {}, 
-        } 
+        }
     } 
 }
 

@@ -13,8 +13,15 @@ export default ( config ) => ( req:Request, res:Response, next:NextFunction  ) =
             return req[ val ][ key ];
         });
 
+        if(Object.keys(req[obj.in]).length===0){
+            errors.push({
+                message:`Values should be passed through ${obj.in}`,
+                status:400
+            });
+        }
+
         if (obj.required) {
-            if (isNull(values)) {
+            if (isNull(values[0])) {
                 errors.push({
                     key: {key},
                     location: {val1},
@@ -24,7 +31,7 @@ export default ( config ) => ( req:Request, res:Response, next:NextFunction  ) =
         }
         // Checking for string
         if (obj.string) {
-            if ( !( typeof ( values ) === 'string' ) ) {
+            if ( !( typeof ( values[0] ) === 'string' ) ) {
                 errors.push({
                     key: {key},
                     location: {val1},
@@ -65,7 +72,7 @@ export default ( config ) => ( req:Request, res:Response, next:NextFunction  ) =
                 errors.push({
                     key: {key},
                     location: {val1},
-                    message: obj.errorMessage || `${key}  must be an number` ,
+                    message: obj.errorMessage,
                 });
             }
         }
