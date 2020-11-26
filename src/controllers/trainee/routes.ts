@@ -2,14 +2,14 @@ import { Router } from "express";
 import TraineeController from "./Controller";
 import validationHandler from "../../libs/validationHandler";
 import Validation from "./Validation";
-import authMoiddleWare from "../../libs/routes/authMoiddleWare";
+// import authMoiddleWare from "../../libs/routes/authMoiddleWare";
 
 const traineeRouter=Router();
 
-traineeRouter.route('/')
-    // .get(authMoiddleWare('getUser','read'),validationHandler(Validation.get), TraineeController.get)
-    .post(validationHandler(Validation.create),TraineeController.create)
-    .put(validationHandler(Validation.update),TraineeController.update)
-    .delete(validationHandler(Validation.delete),TraineeController.delete);
+traineeRouter
+    .get('/getall',TraineeController.get)
+    .post('/create',TraineeController.create)
+    .put('/update',TraineeController.update)
+    .delete('/delete',TraineeController.delete);
 
 export default traineeRouter;

@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { userModel } from "../../repositories/user/UserModel";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
+
 class UserController {
     static instance: UserController
 
@@ -18,6 +19,74 @@ class UserController {
         delete user.password;
         console.log("User is : ",user);
         return res.status(200).send({message:"Me",status:"Ok",data:user});
+    }
+
+    get(req: Request, res: Response, next: NextFunction) {
+        try {
+            console.log("Inside get request for user");
+            const data =
+                [
+                    {
+                        name: "user1",
+                        address: "Noida"
+                    }
+                ]
+            res.status(200).send({ message: "successfully fetched users", Data: data });
+        }
+        catch (err) {
+            console.log("Inside error", err);
+        }
+    }
+
+    create(req: Request, res: Response, next: NextFunction) {
+        try {
+            console.log("Inside post request for user");
+            const data =
+                [
+                    {
+                        name: "user1",
+                        address: "Noida"
+                    }
+                ]
+            res.status(200).send({ message: "successfully fetched users", Data: data });
+        }
+        catch (err) {
+            console.log("Inside error", err);
+        }
+    }
+
+    update(req: Request, res: Response, next: NextFunction) {
+        try {
+            console.log("Inside update request for user");
+            const data =
+                [
+                    {
+                        name: "user1",
+                        address: "Noida"
+                    }
+                ]
+            res.status(200).send({ message: "successfully fetched users", Data: data });
+        }
+        catch (err) {
+            console.log("Inside error", err);
+        }
+    }
+
+    delete(req: Request, res: Response, next: NextFunction) {
+        try {
+            console.log("Inside delete request for user");
+            const data =
+                [
+                    {
+                        name: "user1",
+                        address: "Noida"
+                    }
+                ]
+            res.status(200).send({ message: "successfully fetched users", Data: data });
+        }
+        catch (err) {
+            console.log("Inside error", err);
+        }
     }
 
     login(req: Request, res: Response, next: NextFunction) {
