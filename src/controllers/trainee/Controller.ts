@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { userModel } from "../../repositories/user/UserModel";
 import UserRepository from "../../repositories/user/UserRepository";
 import * as bcrypt from "bcrypt";
+import IRequest from "../../libs/routes/IRequest";
 
 class TraineeController {
     static instance: TraineeController
@@ -142,40 +143,27 @@ class TraineeController {
         }
     }
 
-    update = (req: Request, res: Response, next: NextFunction) => {
-        try {
-
-            console.log("::::::::::::INSIDE UPDATE METHOD::::::::::::");
-
-            console.log("Inside update method");
-            const { id, name, role, email, password } = req.body;
-            userModel.findOne({ originalId: id }, (err, result) => {
-
-                if (result != null) {
-                    // updatedAt: Date.now(), updatedBy: id, createdBy: id, 
-                    this.userRepository.update({updatedAt: Date.now(), updatedBy: id, createdBy: id, name: name || result.name, role: role || result.role, email: email || result.email, password: password || result.password }, result.id)
-                        .then((data) => {
-                            console.log("Response is : ", data);
-                            res.send({
-                                "status": "ok",
-                                "message": "Trainee Updated Successfully",
-                                data: ({
-                                    id: result.id
-                                })
-                            });
-                        })
-                }
-                else {
-                    console.log("Trainee does not exist");
-                    res.send({
-                        status: 404,
-                        message: "Trainee does not exist",
-                        data: ({
-                            id: id
-                        })
-                    });
-                }
-
+    update=async(req: IRequest, res: Response, next: NextFunction)=> {
+        try{
+        const { id, dataToUpdate } = req.body;
+        const updator = req.user._id;
+        const user = new UserRepository();
+        await user.updateUser(id, dataToUpdate, updator)
+            .then((result) => {
+                console.log("Trainee updated .......");
+                res.send({
+                    "status": "ok",
+                    "message": "Trainee Updated Successfully",
+                    data: ({
+                        id: id
+                    })
+                });
+            })
+            .catch((err) => {
+                res.send({
+                    error: 'Trainee Not Found for update',
+                    code: 404
+                });
             });
         }
         catch (err) {
@@ -189,7 +177,6 @@ class TraineeController {
     }
 
     delete = (req: Request, res: Response, next: NextFunction) => {
-
         try {
 
             console.log("::::::::::::INSIDE DELETE METHOD::::::::::::");

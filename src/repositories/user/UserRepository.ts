@@ -32,13 +32,9 @@ export default class UserRepository extends VersionableRepository<IUserModel,mon
         });
         return model.save();
     }
-
-    public update(data:any, id:any):Promise<IUserModel>{
-        console.log("UserRepository :: update ",data);
-        return super.update(data,id);
+    public updateUser(id, data, updator) {
+        return super.update(id, data, updator);
     }
-
-
     public deleteData(id:any) {
         return super.delete(id);
         }

@@ -64,6 +64,12 @@ let config=
             required: true, 
             string: true, 
             in:['body'],
+        },
+        dataToUpdate: {
+            in: ['body'],
+            required: true,
+            isObject: true,
+            custom: function (dataToUpdate) { },
         }
     } 
 }

@@ -44,16 +44,37 @@ export default class VersioningRepository<D extends mongoose.Document, M extends
         return this.model.find(finalQuery, projection, options);
     }
 
-    public async update(data: any, id: string): Promise<D> {
+    public async update(id: string, dataToUpdate: any, updator) {
         let originalData;
-        const prev = await this.findOne({ originalId: id, deletedAt: null, deletedBy: null })
-        originalData = prev;
-        this.delete(id);
+        await this.findOne({ _id: id, updatedAt: null, deletedAt: null })
+            .then((data) => {
+                if (data === null) {
+                    throw '';
+                }
+                originalData = data;
+                const newId = VersioningRepository.generateObjectId();
+                const oldId = originalData._id;
+                const oldModel = {
+                    ...originalData,
+                    deletedAt: Date.now(),
+                    deletedBy: id,
+                };
 
-        const newData = Object.assign(JSON.parse(JSON.stringify(originalData)), data);
-        newData._id = VersioningRepository.generateObjectId();
-        const model = new this.model(newData);
-        return model.save();
+                const newData = Object.assign(JSON.parse(JSON.stringify(originalData)), dataToUpdate);
+                newData._id = newId;
+                newData.updatedAt= Date.now(),
+                newData.updatedBy=oldId;
+                this.model.updateOne({ _id: oldId }, oldModel)
+                    .then((res) => {
+                        if (res === null) {
+                            throw '';
+                        }
+                        else
+                            return res;
+                    });
+
+                return this.model.create(newData);
+            });
     }
     public async delete(id: any) {
 
@@ -78,9 +99,7 @@ export default class VersioningRepository<D extends mongoose.Document, M extends
                             }
                         })
                 }
-                console.log("mmmmmm : ", data);
             })
-
     }
 
     public async list(searchBy, sort, skip, limit): Promise<D[]> {
