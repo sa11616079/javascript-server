@@ -33,7 +33,6 @@ export default class VersionableSchema extends mongoose.Schema {
         required:false,
         type: String,
       }}, options);
-    //   console.log(versionedOptions)
       super(versionedOptions, collections);
     }
   }
