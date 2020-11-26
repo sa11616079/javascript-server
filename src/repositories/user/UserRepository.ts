@@ -41,8 +41,8 @@ export default class UserRepository extends VersionableRepository<IUserModel,mon
     }
 
 
-    public deleteData(id:any, remover:any) {
-        return super.delete(id, remover);
+    public deleteData(id:any) {
+        return super.delete(id);
         }
 
     public count(query:any={}):any{

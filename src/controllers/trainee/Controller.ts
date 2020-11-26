@@ -152,7 +152,8 @@ class TraineeController {
             userModel.findOne({ originalId: id }, (err, result) => {
 
                 if (result != null) {
-                    this.userRepository.update({ updatedAt: Date.now(), updatedBy: id, createdBy: id, name: name || result.name, role: role || result.role, email: email || result.email, password: password || result.password }, result.id)
+                    // updatedAt: Date.now(), updatedBy: id, createdBy: id, 
+                    this.userRepository.update({updatedAt: Date.now(), updatedBy: id, createdBy: id, name: name || result.name, role: role || result.role, email: email || result.email, password: password || result.password }, result.id)
                         .then((data) => {
                             console.log("Response is : ", data);
                             res.send({
@@ -193,11 +194,10 @@ class TraineeController {
 
             console.log("::::::::::::INSIDE DELETE METHOD::::::::::::");
             const { id } = req.body;
-            console.log(id);
             userModel.findOne({ originalId: id }, (err, result1) => {
                 if (result1 != null) {
 
-                    this.userRepository.deleteData(id, result1.id)
+                    this.userRepository.deleteData(id)
                         .then((result) => {
                             console.log("Trainee Deleted Successfully");
                             res.send({

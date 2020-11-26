@@ -15,6 +15,7 @@ export default class VersioningRepository<D extends mongoose.Document, M extends
     public async create(options: any): Promise<D> {
         console.log("VersioningRepository :: create ", options);
         const id = VersioningRepository.generateObjectId();
+        delete options._id;
         const model = new this.model({
             ...options,
             _id: id,
@@ -48,32 +49,14 @@ export default class VersioningRepository<D extends mongoose.Document, M extends
         let originalData;
         const prev = await this.findOne({ originalId: id, deletedAt: null, deletedBy: null }) 
         originalData = prev;
-        this.updateOne(originalData);
+        this.delete(id);
         const newData = Object.assign(JSON.parse(JSON.stringify(originalData)), data);
         newData._id = VersioningRepository.generateObjectId();
-        delete newData.deletedAt;
         const model = new this.model(newData);
         return model.save();
     }
 
-    public async updateOne(originalData: any) {
-
-        const oldId = originalData._id;
-        const oldModel = {
-            ...originalData,
-            deletedBy: oldId,
-            deletedAt: Date.now(),
-        };
-        this.model.updateOne({ originalId: oldId }, oldModel)
-            .then((res) => {
-                if (res === null) {
-                    throw 'Error';
-                }
-            })
-            .catch((err) => { console.log("errror is :  ", err) });
-    }
-
-    public async delete(id: any, remover: any) {
+    public async delete(id: any) {
 
         let originalData;
         await this.findOne({ originalId: id, deletedAt: null, deletedBy: null })
