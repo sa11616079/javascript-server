@@ -24,14 +24,32 @@ class TraineeController {
 
     get = (req: Request, res: Response, next: NextFunction) => {
         try {
+
             console.log("Inside get request for user");
             this.userRepository.count()
                 .then((count) => {
                     if (count > 0) {
+                        let sortBy: any;
+                        if (req.query.sortBy === "name") {
+                            sortBy = { name: 1 };
+                        }
+                        else if (req.query.sortBy === "email") {
+                            sortBy = { email: 1 };
+                        }
+                        else {
+                            sortBy = { createdAt: -1 };
+                        }
                         this.userRepository.getAll()
                             .then((result) => {
-                                console.log("All data is : ", result);
-                                res.status(200).send({ message: "successfully fetched user data", details: result });
+
+                                this.userRepository.list("trainee",sortBy,req.query.skip,req.query.limit)
+                                    .then((countTrainee) => {
+
+                                        console.log("All data is : ", countTrainee);
+                                        console.log("total trainees : ", countTrainee.length);
+                                        console.log("NoOfUsers is : ", result.length);
+                                        res.status(200).send({ message: "successfully fetched user data", NoOfUser: result.length, NoOfTrainees: countTrainee.length, details: countTrainee });
+                                    })
                             })
                     }
                     else {

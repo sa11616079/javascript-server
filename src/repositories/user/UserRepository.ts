@@ -15,7 +15,6 @@ export default class UserRepository extends VersionableRepository<IUserModel,mon
     }
 
     public findOne(query):mongoose.DocumentQuery<IUserModel,IUserModel,{}>{
-        // console.log("UserRepository :: findOne ",query);
         return super.findOne(query).lean();
     }
 
