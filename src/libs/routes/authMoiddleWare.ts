@@ -7,21 +7,16 @@ import config from "../../config/configuration";
 
 export default (moduleName: object, permissionType: string) => (req: IRequest, res: Response, next: NextFunction) => {
   try {
-    //   console.log("The config is : ", moduleName, permissionType);
-    //   console.log("Header is ", req.headers['authorization']);
     const token = req.headers['authorization'];
-    // eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2MDU3OTM4MjYsImV4cCI6MTYzNzMyOTgyNiwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIm5hbWUiOiJUcmFpbmVlIiwiZW1haWwiOiJ0cmFpbmVlQHN1Y2Nlc3NpdmUudGVjaCIsInJvbGUiOiJ0cmFpbmVlIiwiaWQiOiI1ZmI2NzFjMmYyY2RiZDU2MWIwMjgzNDIifQ.LtTvYELFG01HKHjVcdR5Q984VuQGpD-07Dtwpt_-yBs
     const secret = config.secretKey;
     async function verifyUser() {
       const decodeUser = await jwt.verify(token, secret);
       return decodeUser;
     }
     verifyUser().then((result) => {
-      // console.log("result is :",result)
       if (result) {
         const role = result.role;
         const userRepository: UserRepository = new UserRepository();
-        // console.log('User',);
         userRepository.findOne({ originalId: result.id })
           .then((result) => {
             if (!result) {
