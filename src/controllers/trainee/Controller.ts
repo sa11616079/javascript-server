@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { userModel } from "../../repositories/user/UserModel";
 import UserRepository from "../../repositories/user/UserRepository";
 import * as bcrypt from "bcrypt";
-import IRequest from "../../libs/routes/IRequest";
 
 class TraineeController {
     static instance: TraineeController
@@ -143,12 +142,11 @@ class TraineeController {
         }
     }
 
-    update=async(req: IRequest, res: Response, next: NextFunction)=> {
+    update=async(req: Request, res: Response, next: NextFunction)=> {
         try{
         const { id, dataToUpdate } = req.body;
-        const updator = req.user._id;
         const user = new UserRepository();
-        await user.updateUser(id, dataToUpdate, updator)
+        await user.updateUser(id, dataToUpdate)
             .then((result) => {
                 console.log("Trainee updated .......");
                 res.send({

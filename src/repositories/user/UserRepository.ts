@@ -32,8 +32,8 @@ export default class UserRepository extends VersionableRepository<IUserModel,mon
         });
         return model.save();
     }
-    public updateUser(id, data, updator) {
-        return super.update(id, data, updator);
+    public updateUser(id, data) {
+        return super.update(id, data);
     }
     public deleteData(id:any) {
         return super.delete(id);

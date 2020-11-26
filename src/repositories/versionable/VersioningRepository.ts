@@ -44,7 +44,7 @@ export default class VersioningRepository<D extends mongoose.Document, M extends
         return this.model.find(finalQuery, projection, options);
     }
 
-    public async update(id: string, dataToUpdate: any, updator) {
+    public async update(id: string, dataToUpdate: any) {
         let originalData;
         await this.findOne({ _id: id, updatedAt: null, deletedAt: null })
             .then((data) => {
