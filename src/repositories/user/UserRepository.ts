@@ -15,7 +15,6 @@ export default class UserRepository extends VersionableRepository<IUserModel,mon
     }
 
     public findOne(query):mongoose.DocumentQuery<IUserModel,IUserModel,{}>{
-        // console.log("UserRepository :: findOne ",query);
         return super.findOne(query).lean();
     }
 
@@ -24,7 +23,6 @@ export default class UserRepository extends VersionableRepository<IUserModel,mon
     }
 
     public create(data:any):Promise<IUserModel>{
-        // console.log("UserRepository :: create ",data);
         const id=UserRepository.generateObjectId();
         const model=new userModel({
             _id:id,
@@ -48,9 +46,4 @@ export default class UserRepository extends VersionableRepository<IUserModel,mon
     public count(query:any={}):any{
         return super.count(query);
     }
-
-    // public list(role,sort,skip,limit)
-    // {
-    //     return super.list(role,sort,skip,limit);
-    // }
 }
