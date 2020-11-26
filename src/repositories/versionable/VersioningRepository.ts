@@ -55,7 +55,6 @@ export default class VersioningRepository<D extends mongoose.Document, M extends
         const model = new this.model(newData);
         return model.save();
     }
-
     public async delete(id: any) {
 
         let originalData;
@@ -64,14 +63,9 @@ export default class VersioningRepository<D extends mongoose.Document, M extends
                 if (data === null) {
                     throw undefined;
                 }
-
-                
-
                 else {
                     originalData = data;
                     const oldId = originalData._id;
-                    delete originalData.updatedAt;
-
                     const modelDelete = {
                         ...originalData,
                         deletedBy: oldId,
@@ -84,7 +78,7 @@ export default class VersioningRepository<D extends mongoose.Document, M extends
                             }
                         })
                 }
-                console.log("mmmmmm : ",data);
+                console.log("mmmmmm : ", data);
             })
 
     }
