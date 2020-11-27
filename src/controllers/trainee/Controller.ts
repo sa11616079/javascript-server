@@ -24,13 +24,10 @@ class TraineeController {
 
     get = (req: Request, res: Response, next: NextFunction) => {
         try {
-
             console.log("::::::::::::INSIDE GETALL METHOD::::::::::::");
-
             this.userRepository.count()
                 .then((count) => {
                     if (count > 0) {
-
                         const keys = Object.keys(req.query);
                         let sortBy: any;
                         let searchBy: any;
@@ -102,7 +99,6 @@ class TraineeController {
             console.log("Inside create method");
             const { name, role, email, password } = req.body;
             userModel.findOne({ email: email }, (err, result) => {
-
                 if (result === null) {
 
                     async function encodedPassword() {
@@ -142,27 +138,28 @@ class TraineeController {
         }
     }
 
-    update=async(req: Request, res: Response, next: NextFunction)=> {
-        try{
-        const { id, dataToUpdate } = req.body;
-        const user = new UserRepository();
-        await user.updateUser(id, dataToUpdate)
-            .then((result) => {
-                console.log("Trainee updated .......");
-                res.send({
-                    "status": "ok",
-                    "message": "Trainee Updated Successfully",
-                    data: ({
-                        id: id
-                    })
+    update = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { id, dataToUpdate } = req.body;
+            const user = new UserRepository();
+            await user.updateUser(id, dataToUpdate)
+                .then((result) => {
+                    console.log("Trainee updated .......");
+                    res.send({
+                        status: "ok",
+                        message: "Trainee Updated Successfully",
+                        data: ({
+                            id: id
+                        })
+                    });
+                })
+                .catch((err) => {
+                    res.send({
+                        status: "error",
+                        message: 'Trainee Not Found for update',
+                        code: 404
+                    });
                 });
-            })
-            .catch((err) => {
-                res.send({
-                    error: 'Trainee Not Found for update',
-                    code: 404
-                });
-            });
         }
         catch (err) {
             console.log("Inside error : ", err);
@@ -175,34 +172,31 @@ class TraineeController {
     }
 
     delete = (req: Request, res: Response, next: NextFunction) => {
-        try {
 
+        try {
             console.log("::::::::::::INSIDE DELETE METHOD::::::::::::");
             const { id } = req.body;
-            userModel.findOne({ originalId: id }, (err, result1) => {
-                if (result1 != null) {
-
-                    this.userRepository.deleteData(id)
-                        .then((result) => {
-                            console.log("Trainee Deleted Successfully");
-                            res.send({
-                                status: "ok",
-                                message: "Trainee Deleted Successfully",
-                                data: ({
-                                    id: id
-                                })
-                            });
+            this.userRepository.deleteData(id)
+                .then((result) => {
+                    console.log("Trainee Deleted Successfully");
+                    res.send({
+                        status: "ok",
+                        message: "Trainee Deleted Successfully",
+                        data: ({
+                            id: id
                         })
-                }
-                else {
+                    });
+                })
+                .catch(() => {
+
                     console.log("User not found to be deleted");
                     res.send({
                         status: "error",
                         message: 'User not found to be deleted',
                         code: 404
                     });
-                }
-            })
+
+                })
         }
         catch (err) {
             console.log("Inside error : ", err);

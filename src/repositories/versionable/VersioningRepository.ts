@@ -46,7 +46,7 @@ export default class VersioningRepository<D extends mongoose.Document, M extends
 
     public async update(id: string, dataToUpdate: any) {
         let originalData;
-        await this.findOne({ _id: id, updatedAt: null, deletedAt: null })
+        await this.findOne({ _id: id, deletedAt: null })
             .then((data) => {
                 if (data === null) {
                     throw '';
