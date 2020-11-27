@@ -9,19 +9,15 @@ export default class UserRepository extends VersionableRepository<IUserModel,mon
     public static generateObjectId(){
         return String(mongoose.Types.ObjectId());
     }
-
     constructor(){
         super(userModel);
     }
-
     public findOne(query):mongoose.DocumentQuery<IUserModel,IUserModel,{}>{
         return super.findOne(query).lean();
     }
-
     public find(query,projection ?:any,options ?:any):any{
         return super.find(query,projection,options);
     }
-
     public create(data:any):Promise<IUserModel>{
         const id=UserRepository.generateObjectId();
         const model=new userModel({

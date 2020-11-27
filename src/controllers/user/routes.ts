@@ -5,7 +5,6 @@ import Validation from "./Validation";
 import authMoiddleWare from "../../libs/routes/authMoiddleWare";
 import {permissions} from "../../libs/constants";
 
-
 /**
  * @swagger
  *
@@ -24,8 +23,6 @@ import {permissions} from "../../libs/constants";
 const userRouter=Router();
 userRouter.route('/me')
     .get(authMoiddleWare(permissions.getUser,"read"),UserController.me);
-
-
 
  /**
  * @swagger
@@ -58,8 +55,6 @@ userRouter.route('/me')
 *               err:
 *                   example: Password is incorrect
  */
-
 userRouter.route('/login')
     .post(validationHandler(Validation.login),UserController.login);
-
 export default userRouter;

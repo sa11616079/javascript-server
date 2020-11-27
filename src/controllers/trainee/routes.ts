@@ -5,7 +5,6 @@ import Validation from "./Validation";
 import authMoiddleWare from "../../libs/routes/authMoiddleWare";
 import {permissions} from "../../libs/constants";
 
-
 const traineeRouter=Router();
 traineeRouter
  /**
@@ -57,7 +56,6 @@ traineeRouter
  */
 .get("/getall",authMoiddleWare(permissions.getUser,"read"),validationHandler(Validation.get),TraineeController.get)
 
-
 /**
  * @swagger
  *
@@ -85,7 +83,6 @@ traineeRouter
  *                      example: 'successfully created Trainee'
  */
 .post("/create",authMoiddleWare(permissions.getUser,"read"),validationHandler(Validation.create),TraineeController.create)
-
 
  /**
  * @swagger
@@ -115,7 +112,6 @@ traineeRouter
  */
 .put("/update",authMoiddleWare(permissions.getUser,"read"),validationHandler(Validation.update),TraineeController.update)
 
-
  /**
  * @swagger
  *
@@ -143,5 +139,4 @@ traineeRouter
  *                      example: 'successfully deleted details'
  */
 .delete("/delete",authMoiddleWare(permissions.getUser,"read"),validationHandler(Validation.delete),TraineeController.delete);
-
 export default traineeRouter;

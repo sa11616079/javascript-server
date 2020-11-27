@@ -5,7 +5,6 @@ import * as bcrypt from "bcrypt";
 
 class TraineeController {
     static instance: TraineeController
-
     static getInstance() {
         if (TraineeController.instance) {
             return TraineeController.instance;
@@ -13,7 +12,6 @@ class TraineeController {
         TraineeController.instance = new TraineeController();
         return TraineeController.instance;
     }
-
     constructor() {
         this.get = this.get.bind(this);
         this.create = this.create.bind(this);
@@ -21,7 +19,6 @@ class TraineeController {
         this.delete = this.delete.bind(this);
     }
     userRepository: UserRepository = new UserRepository();
-
     get = (req: Request, res: Response, next: NextFunction) => {
         try {
             console.log("::::::::::::INSIDE GETALL METHOD::::::::::::");
@@ -91,16 +88,13 @@ class TraineeController {
             });
         }
     }
-
     create = (req: Request, res: Response, next: NextFunction) => {
         try {
-
             console.log("::::::::::::INSIDE CRAETE METHOD::::::::::::");
             console.log("Inside create method");
             const { name, role, email, password } = req.body;
             userModel.findOne({ email: email }, (err, result) => {
                 if (result === null) {
-
                     async function encodedPassword() {
                         return await bcrypt.hash(password, 10)
                     }
@@ -116,7 +110,6 @@ class TraineeController {
                             })
                     })
                 }
-
                 else {
                     res.send({
                         status: 404,
@@ -137,7 +130,6 @@ class TraineeController {
             });
         }
     }
-
     update = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id, dataToUpdate } = req.body;
@@ -170,9 +162,7 @@ class TraineeController {
             });
         }
     }
-
     delete = (req: Request, res: Response, next: NextFunction) => {
-
         try {
             console.log("::::::::::::INSIDE DELETE METHOD::::::::::::");
             const { id } = req.body;

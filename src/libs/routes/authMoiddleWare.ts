@@ -7,7 +7,6 @@ import config from "../../config/configuration";
 
 export default (moduleName: object, permissionType: string) => (req: IRequest, res: Response, next: NextFunction) => {
   try {
-
     console.log("::::::::::::INSIDE INSIDEAUTHMIDDLEWARE::::::::::::");
     const token = req.headers['authorization'];
     const secret = config.secretKey;
@@ -55,7 +54,6 @@ export default (moduleName: object, permissionType: string) => (req: IRequest, r
         console.log("Error : ", err);
       })
   }
-
   catch (err) {
     next({
       error: "Unauthorized",
