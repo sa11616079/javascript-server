@@ -6,12 +6,10 @@ export default class VersioningRepository<D extends mongoose.Document, M extends
     public static generateObjectId() {
         return String(mongoose.Types.ObjectId());
     }
-
     private model: M;
     constructor(model) {
         this.model = model;
     }
-
     public async create(options: any): Promise<D> {
         console.log("VersioningRepository :: create ", options);
         const id = VersioningRepository.generateObjectId();
@@ -22,17 +20,14 @@ export default class VersioningRepository<D extends mongoose.Document, M extends
         });
         return await model.save();
     }
-
     public count(query: any): Query<number> {
         const finalQuery = { deleteAt: null, ...query };
         return this.model.countDocuments(finalQuery);
     }
-
     public getAll(query: any = {}, projection: any = {}, options: any = {}): DocumentQuery<D[], D> {
         const finalQuery = { deletedAt: null, ...query };
         return this.model.find(finalQuery, projection, options);
     }
-
     public findOne(query: any): mongoose.DocumentQuery<D, D> {
         const finalQuery = { deleteAt: null, ...query };
         return this.model.findOne(finalQuery);
@@ -42,64 +37,62 @@ export default class VersioningRepository<D extends mongoose.Document, M extends
         const finalQuery = { deleteAt: null, ...query };
         return this.model.find(finalQuery, projection, options);
     }
-
-    public async update(data: any, id: string): Promise<D> {
+    public async update(id: string, dataToUpdate: any) {
         let originalData;
-        const prev = await this.findOne({ originalId: id, deletedAt: null, deletedBy: null }) 
-        originalData = prev;
-        this.updateOne(originalData);
-        const newData = Object.assign(JSON.parse(JSON.stringify(originalData)), data);
-        newData._id = VersioningRepository.generateObjectId();
-        delete newData.deletedAt;
-        const model = new this.model(newData);
-        return model.save();
-    }
-
-    public async updateOne(originalData: any) {
-
-        const oldId = originalData._id;
-        const oldModel = {
-            ...originalData,
-            deletedBy: oldId,
-            deletedAt: Date.now(),
-        };
-        this.model.updateOne({ originalId: oldId }, oldModel)
-            .then((res) => {
-                if (res === null) {
-                    throw 'Error';
+        await this.findOne({ _id: id, deletedAt: null })
+            .then((data) => {
+                if (data === null) {
+                    throw '';
                 }
-            })
-            .catch((err) => { console.log("errror is :  ", err) });
+                originalData = data;
+                const newId = VersioningRepository.generateObjectId();
+                const oldId = originalData._id;
+                const oldModel = {
+                    ...originalData,
+                    deletedAt: Date.now(),
+                    deletedBy: id,
+                };
+                const newData = Object.assign(JSON.parse(JSON.stringify(originalData)), dataToUpdate);
+                newData._id = newId;
+                newData.updatedAt = Date.now(),
+                    newData.updatedBy = oldId;
+                this.model.updateOne({ _id: oldId }, oldModel)
+                    .then((res) => {
+                        if (res === null) {
+                            throw '';
+                        }
+                        else
+                            return res;
+                    });
+
+                return this.model.create(newData);
+            });
     }
-
-    public async delete(id: any, remover: any) {
-
+    public async delete(id: any) {
         let originalData;
         await this.findOne({ originalId: id, deletedAt: null, deletedBy: null })
             .then((data) => {
                 if (data === null) {
                     throw undefined;
                 }
-
-                originalData = data;
-                const oldId = originalData._id;
-
-                const modelDelete = {
-                    ...originalData,
-                    deletedBy: oldId,
-                    deletedAt: Date.now(),
-                };
-                this.model.updateOne({ originalId: oldId }, modelDelete)
-                    .then((res) => {
-                        if (res === null) {
-                            throw undefined;
-                        }
-                    })
+                else {
+                    originalData = data;
+                    const oldId = originalData._id;
+                    const modelDelete = {
+                        ...originalData,
+                        deletedBy: oldId,
+                        deletedAt: Date.now(),
+                    };
+                    this.model.updateOne({ originalId: oldId }, modelDelete)
+                        .then((res) => {
+                            if (res === null) {
+                                throw undefined;
+                            }
+                        })
+                }
             })
     }
-
-    public async list(role,sort ,skip,limit):Promise<D[]>
-    {
-        return this.getAll({role:role}).sort(sort).skip(Number(skip)).limit(Number(limit));
+    public async list(searchBy, sort, skip, limit): Promise<D[]> {
+        return this.getAll(searchBy).sort(sort).skip(Number(skip)).limit(Number(limit));
     }
 }

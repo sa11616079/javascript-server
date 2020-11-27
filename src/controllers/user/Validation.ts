@@ -13,7 +13,6 @@ let config=
             in: ['body'],
             errorMessage: 'Password is required', 
         }
-    }
+    }   
 }
-
 export default config;

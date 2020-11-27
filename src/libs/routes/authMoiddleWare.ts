@@ -7,6 +7,7 @@ import config from "../../config/configuration";
 
 export default (moduleName: object, permissionType: string) => (req: IRequest, res: Response, next: NextFunction) => {
   try {
+    console.log("::::::::::::INSIDE INSIDEAUTHMIDDLEWARE::::::::::::");
     const token = req.headers['authorization'];
     const secret = config.secretKey;
     async function verifyUser() {
@@ -15,26 +16,35 @@ export default (moduleName: object, permissionType: string) => (req: IRequest, r
     }
     verifyUser().then((result) => {
       if (result) {
-        const role = result.role;
+        const role = result['role'];
         const userRepository: UserRepository = new UserRepository();
-        userRepository.findOne({ originalId: result.id })
-          .then((result) => {
-            if (!result) {
+        userRepository.find({ email: result['email'], originalId: result['id'], deletedAt: null })
+          .then((result1) => {
+            if (!result1) {
+
               console.log("user does not exist ");
-              res.status(400).send({ message: "user does not exist", data: result });
+              res.send({
+                status: 404,
+                message: "user does not exist",
+                data: result1
+              });
             }
             else {
               if (hasPermission(moduleName, role, permissionType)) {
                 console.log(`${role} has permission ${permissionType} :true`);
+                req.user = result1;
+                next();
               }
               else {
-                next({ error: "unauthorized", message: "Permission denied", status: 403 });
+                next({
+                  status: 403,
+                  error: "Unauthorized",
+                  message: "Permission denied",
+                });
               }
             }
           })
           .catch((err) => { console.log(err) });
-        req.user = result;
-        next();
       }
       else {
         console.log("Has problem in token");
@@ -44,7 +54,6 @@ export default (moduleName: object, permissionType: string) => (req: IRequest, r
         console.log("Error : ", err);
       })
   }
-
   catch (err) {
     next({
       error: "Unauthorized",
