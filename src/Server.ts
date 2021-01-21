@@ -7,6 +7,7 @@ import mainRouter from "./router";
 import Database from "./libs/Database";
 import * as swaggerUi from "swagger-ui-express";
 import * as swaggerJsDoc from "swagger-jsdoc";
+import * as cors from 'cors';
 
 class Server {
     app: express.Express
@@ -47,6 +48,7 @@ class Server {
 
     setupRouts() {
         const { app } = this;
+        app.use(cors());
         app.use("/swagger", swaggerUi.serve, swaggerUi.setup(this.initSwagger()));
         app.use((req: Request, res: Response, next: NextFunction) => {
             console.log('Inside First MidleWare');

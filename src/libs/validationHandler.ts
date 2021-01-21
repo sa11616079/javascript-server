@@ -12,6 +12,7 @@ export default ( config ) => ( req:Request, res:Response, next:NextFunction  ) =
             val1=val;
             return req[ val ][ key ];
         });
+        console.log('value ee : ', val1);
 
         if(Object.keys(req[obj.in]).length===0){
             errors.push({

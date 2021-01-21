@@ -39,14 +39,14 @@ export default class VersioningRepository<D extends mongoose.Document, M extends
     }
     public async update(id: string, dataToUpdate: any) {
         let originalData;
-        await this.findOne({ _id: id, deletedAt: null })
+        await this.findOne({ originalId: id, deletedAt: null })
             .then((data) => {
                 if (data === null) {
                     throw '';
                 }
                 originalData = data;
                 const newId = VersioningRepository.generateObjectId();
-                const oldId = originalData._id;
+                const oldId = originalData.originalId;
                 const oldModel = {
                     ...originalData,
                     deletedAt: Date.now(),

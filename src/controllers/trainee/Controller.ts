@@ -99,11 +99,11 @@ class TraineeController {
                         return await bcrypt.hash(password, 10)
                     }
                     encodedPassword().then((pass) => {
-                        this.userRepository.create({ name: name, role: role, email: email, password: pass })
+                        this.userRepository.create({ name: name, role: role || "trainee", email: email, password: pass })
                             .then((data) => {
                                 console.log("Trainee Created : ", data);
                                 res.send({
-                                    status: "ok",
+                                    status: 200,
                                     message: "Trainee Created Successfully",
                                     data: ({ data })
                                 });
@@ -132,24 +132,23 @@ class TraineeController {
     }
     update = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { id, dataToUpdate } = req.body;
+            const { id, name, role, email } = req.body;
             const user = new UserRepository();
-            await user.updateUser(id, dataToUpdate)
+            await user.updateUser(id, { name: name, role: role || "trainee", email: email })
                 .then((result) => {
                     console.log("Trainee updated .......");
                     res.send({
                         status: "ok",
                         message: "Trainee Updated Successfully",
                         data: ({
-                            id: id
+                            originalId: id
                         })
                     });
                 })
                 .catch((err) => {
                     res.send({
-                        status: "error",
+                        status: 404,
                         message: 'Trainee Not Found for update',
-                        code: 404
                     });
                 });
         }
@@ -165,7 +164,7 @@ class TraineeController {
     delete = (req: Request, res: Response, next: NextFunction) => {
         try {
             console.log("::::::::::::INSIDE DELETE METHOD::::::::::::");
-            const { id } = req.body;
+            const { id } = req.query;
             this.userRepository.deleteData(id)
                 .then((result) => {
                     console.log("Trainee Deleted Successfully");
