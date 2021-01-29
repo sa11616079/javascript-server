@@ -18,7 +18,7 @@ export default (moduleName: object, permissionType: string) => (req: IRequest, r
       if (result) {
         const role = result['role'];
         const userRepository: UserRepository = new UserRepository();
-        userRepository.find({ email: result['email'], originalId: result['id'], deletedAt: null })
+        userRepository.find({ email: result['email'], originalId: result['originalId'], deletedAt: null })
           .then((result1) => {
             if (!result1) {
 

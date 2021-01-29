@@ -11,7 +11,7 @@ let config=
         },
         email: {
             required: true,
-            regex: /^[A-Za-z.0-9]{3,}@[A-Za-z]{10,10}[.]{1,1}[A-Za-z]{4,4}$/,
+            regex: /^[A-Za-z.0-9]{3,}@[A-Za-z]{5,10}[.]{1,1}[A-Za-z]{3,4}$/,
             string: true,
             in: ["body"],
             errorMessage: "Email is required",
@@ -24,11 +24,11 @@ let config=
     }, 
     delete: 
     { 
-        id: 
+        originalId: 
         { 
             required: true, 
             errorMessage: 'Id is required', 
-            in: ['query'] 
+            in: ['query']
         } 
     }, 
     get: 
@@ -52,7 +52,7 @@ let config=
     }, 
     update: 
     { 
-        id: 
+        originalId: 
         {
             required: true, 
             string: true, 
