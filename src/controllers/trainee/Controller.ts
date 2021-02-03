@@ -138,7 +138,7 @@ class TraineeController {
                 res.send({
                     status: "ok",
                     message: "Trainee Updated Successfully",
-                    data: req.body.originalId,
+                    data: trainee,
                 });
             }
         } catch (err) {

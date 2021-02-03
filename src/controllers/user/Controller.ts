@@ -20,6 +20,7 @@ class UserController {
 
             console.log(":::::::::::::::INSIDE ME::::::::::::::");
             const { user } = req;
+            console.log('useee ; ', user);
             delete user.password;
             console.log("User is : ", user);
             res.send({
@@ -47,7 +48,7 @@ class UserController {
                     hashPassword().then((result1) => {
                         if (result1) {
 
-                            const payload = { password: result.password, email: result.email, id: result.id, role: result.role };
+                            const payload = { password: result.password, email: result.email, originalId: result.id, role: result.role };
                             async function signInUser() {
                                 const token = await jwt.sign(payload, config.secretKey, { expiresIn: '1d' });
                                 return token;

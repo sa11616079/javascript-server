@@ -22,7 +22,7 @@ export default class VersioningRepository<D extends mongoose.Document, M extends
         return await model.save();
     }
     public count(query: any): Query<number> {
-        const finalQuery = { deleteAt: null, ...query };
+        const finalQuery = { deletedAt: null, ...query };
         return this.model.countDocuments(finalQuery);
     }
     public getAll(query: any = {}, projection: any = {}, options: any = {}): DocumentQuery<D[], D> {
@@ -30,12 +30,12 @@ export default class VersioningRepository<D extends mongoose.Document, M extends
         return this.model.find(finalQuery, projection, options);
     }
     public findOne(query: any): mongoose.DocumentQuery<D, D> {
-        const finalQuery = { deleteAt: null, ...query };
+        const finalQuery = { deletedAt: null, ...query };
         return this.model.findOne(finalQuery);
     }
 
     public find(query: any = {}, projection: any = {}, options: any = {}): DocumentQuery<D[], D> {
-        const finalQuery = { deleteAt: null, ...query };
+        const finalQuery = { deletedAt: null, ...query };
         return this.model.find(finalQuery, projection, options);
     }
 
