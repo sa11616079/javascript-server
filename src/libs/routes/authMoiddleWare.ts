@@ -37,7 +37,7 @@ export default (moduleName: object, permissionType: string) => (req: IRequest, r
               }
               else {
                 next({
-                  status: 403,
+                  status: 404,
                   error: "Unauthorized",
                   message: "Permission denied",
                 });
@@ -57,7 +57,7 @@ export default (moduleName: object, permissionType: string) => (req: IRequest, r
   catch (err) {
     next({
       error: "Unauthorized",
-      code: 403
+      status: 404
     })
   }
 }

@@ -62,10 +62,9 @@ class TraineeController {
                                         res.send({
                                             status: "ok",
                                             message: "Successfully fetched Trainees",
-                                            data: ({
-                                                count: countTrainee.length,
-                                                records: countTrainee
-                                            })
+                                            TotalCount: result.length,
+                                            TraineeCount: countTrainee.length,
+                                            records: countTrainee,
                                         });
                                     })
                             })
@@ -99,13 +98,13 @@ class TraineeController {
                         return await bcrypt.hash(password, 10)
                     }
                     encodedPassword().then((pass) => {
-                        this.userRepository.create({ name: name, role: role, email: email, password: pass })
+                        this.userRepository.create({ name: name, role: role || "trainee", email: email, password: pass })
                             .then((data) => {
                                 console.log("Trainee Created : ", data);
                                 res.send({
-                                    status: "ok",
+                                    status: 200,
                                     message: "Trainee Created Successfully",
-                                    data: ({ data })
+                                    data: data
                                 });
                             })
                     })
@@ -114,9 +113,7 @@ class TraineeController {
                     res.send({
                         status: 404,
                         message: `${email} is already exist`,
-                        data: ({
-                            email: email
-                        })
+                        data: email,
                     });
                 }
             })
@@ -130,72 +127,51 @@ class TraineeController {
             });
         }
     }
+
     update = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { id, dataToUpdate } = req.body;
-            const user = new UserRepository();
-            await user.updateUser(id, dataToUpdate)
-                .then((result) => {
-                    console.log("Trainee updated .......");
-                    res.send({
-                        status: "ok",
-                        message: "Trainee Updated Successfully",
-                        data: ({
-                            id: id
-                        })
-                    });
-                })
-                .catch((err) => {
-                    res.send({
-                        status: "error",
-                        message: 'Trainee Not Found for update',
-                        code: 404
-                    });
+            console.log("::::::::::::INSIDE UPDATE METHOD::::::::::::");
+            const { originalId, name, role, email } = req.body;
+            const trainee = await this.userRepository.update({ originalId: originalId, name: name, role: role || "trainee", email: email });
+            if (trainee) {
+                console.log('Response of Repo is', trainee);
+                res.send({
+                    status: "ok",
+                    message: "Trainee Updated Successfully",
+                    data: trainee,
                 });
-        }
-        catch (err) {
-            console.log("Inside error : ", err);
+            }
+        } catch (err) {
             res.send({
-                status: "error",
-                message: "Inside error ",
-                error: err
+                status: 404,
+                message: 'Trainee Not Found for update',
             });
         }
     }
-    delete = (req: Request, res: Response, next: NextFunction) => {
+
+    delete = async (req: Request, res: Response, next: NextFunction) => {
         try {
             console.log("::::::::::::INSIDE DELETE METHOD::::::::::::");
-            const { id } = req.body;
-            this.userRepository.deleteData(id)
-                .then((result) => {
-                    console.log("Trainee Deleted Successfully");
-                    res.send({
-                        status: "ok",
-                        message: "Trainee Deleted Successfully",
-                        data: ({
-                            id: id
-                        })
-                    });
-                })
-                .catch(() => {
-
-                    console.log("User not found to be deleted");
-                    res.send({
-                        status: "error",
-                        message: 'User not found to be deleted',
-                        code: 404
-                    });
-
-                })
-        }
-        catch (err) {
-            console.log("Inside error : ", err);
+            const { originalId } = req.query;
+            console.log('req.body : ', originalId);
+            const result = await this.userRepository.delete(String(originalId));
+            if (result) {
+                res.send({
+                    status: "ok",
+                    message: "Trainee Deleted Successfully",
+                    data: result,
+                });
+            }
+        } catch (err) {
+            console.log("User not found to be deleted");
             res.send({
                 status: "error",
-                message: "Inside error ",
-                error: err
+                message: 'User not found to be deleted',
+                code: 404
             });
         }
+
     }
+   
 }
 export default TraineeController.getInstance();

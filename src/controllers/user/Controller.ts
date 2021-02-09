@@ -20,6 +20,7 @@ class UserController {
 
             console.log(":::::::::::::::INSIDE ME::::::::::::::");
             const { user } = req;
+            console.log('useee ; ', user);
             delete user.password;
             console.log("User is : ", user);
             res.send({
@@ -47,9 +48,9 @@ class UserController {
                     hashPassword().then((result1) => {
                         if (result1) {
 
-                            const payload = { email: result.email, id: result.id, role: result.role };
+                            const payload = { password: result.password, email: result.email, originalId: result.id, role: result.role };
                             async function signInUser() {
-                                const token = await jwt.sign(payload, config.secretKey, { expiresIn: '15m' });
+                                const token = await jwt.sign(payload, config.secretKey, { expiresIn: '1d' });
                                 return token;
                             }
                             signInUser().then((genToken) => {
@@ -58,7 +59,7 @@ class UserController {
                                     console.log("You have Logged in successfully...");
                                     console.log(result);
                                     res.send({
-                                        status: "ok",
+                                        status: 200,
                                         message: 'Authorization Token',
                                         data: genToken,
                                     });
@@ -71,7 +72,7 @@ class UserController {
                         else {
                             res.send({
                                 message: 'Password Doesnt Match',
-                                status: 400
+                                status: 404
                             });
                         }
                     })
